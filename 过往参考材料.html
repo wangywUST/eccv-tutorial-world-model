@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Towards Comprehensive Reasoning in Vision-Language Models | ICCV 2025</title>
+  <link rel="icon" type="image/svg+xml" href="assets/images/iccv-cropped.svg">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    body {
+      padding-top: 70px;
+      margin: 0;
+    }
+    
+    #header {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      height: 70px;
+    }
+    
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #2c3e50;
+      text-decoration: none;
+    }
+    
+    .navbar-brand:hover {
+      color: #3e7b54;
+    }
+    
+    /* Fallback ICCV logo using CSS */
+    .iccv-logo {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #3e7b54 0%, #4a7c59 100%);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 14px;
+      margin-right: 10px;
+    }
+    
+    .navbar-toggler {
+      border: none;
+      padding: 4px 8px;
+    }
+    
+    .navbar-toggler:focus {
+      box-shadow: none;
+    }
+    
+    .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2833, 37, 41, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+    
+    .nav-link:hover {
+      color: #3e7b54 !important;
+    }
+    
+    .navbar-nav .nav-item.active .nav-link {
+      color: #3e7b54 !important;
+      font-weight: 600;
+    }
+    
+    .zoom-button {
+      background: linear-gradient(135deg, #2d8cff 0%, #0066cc 100%) !important;
+      color: white !important;
+      padding: 8px 20px !important;
+      border-radius: 25px !important;
+      font-weight: 600 !important;
+      transition: all 0.3s ease !important;
+      margin-left: 15px;
+      white-space: nowrap;
+    }
+    
+    .zoom-button:hover {
+      background: linear-gradient(135deg, #0066cc 0%, #004c99 100%) !important;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(45, 140, 255, 0.3);
+    }
+    
+    .zoom-button i {
+      margin-right: 6px;
+    }
+    
+    #hero {
+      background: linear-gradient(135deg, #3e7b54 0%, #4a7c59 100%);
+      color: white;
+      padding: 100px 0;
+      text-align: center;
+      margin-top: 0;
+    }
+    
+    #hero h1 {
+      font-size: 2.5em;
+      font-weight: 300;
+      margin-bottom: 20px;
+    }
+    
+    #hero h5 {
+      font-size: 1.5em;
+      margin-bottom: 30px;
+      opacity: 0.9;
+    }
+    
+    #hero p {
+      font-size: 1.1em;
+      opacity: 0.8;
+    }
+    
+    .section {
+      padding: 60px 0;
+    }
+    
+    .section:nth-child(even) {
+      background-color: #f8f9fa;
+    }
+    
+    .section h2 {
+      color: #2c3e50;
+      margin-bottom: 40px;
+      font-weight: 300;
+    }
+    
+    .table-striped > tbody > tr:nth-of-type(odd) > td {
+      background-color: rgba(62, 123, 84, 0.05);
+    }
+    
+    .programme .title {
+      font-weight: normal;
+      color: #2c3e50;
+      margin: 0;
+      font-size: 1.1em;
+    }
+    
+    .speaker-text {
+      color: #000000; /* Changed to pure black */
+      font-weight: 500;
+      font-size: 1em;
+      margin: 0;
+      line-height: 1.4;
+    }
+    
+    .speaker-text a {
+      color: #000000; /* Changed link color to pure black */
+      text-decoration: none;
+      transition: color 0.3s ease;
+      font-weight: 600;
+    }
+    
+    .speaker-text a:hover {
+      color: #3e7b54;
+      text-decoration: underline;
+    }
+    
+    .organizer-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+      gap: 30px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    .organizer-item {
+      display: flex;
+      align-items: center;
+      padding: 30px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(39, 174, 96, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      height: 100%;
+      overflow: visible;
+    }
+    
+    .organizer-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 35px rgba(39, 174, 96, 0.15);
+    }
+    
+    .organizer-avatar {
+      flex-shrink: 0;
+      margin-right: 25px;
+    }
+    
+    .organizer-avatar img {
+      width: 160px;
+      height: 200px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #3e7b54;
+      display: block;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
+    }
+    
+    .organizer-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: left;
+      position: relative;
+      overflow: visible;
+    }
+    
+    .organizer-info::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      width: 280px;
+      height: 350px;
+      transform: translateY(-50%);
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.08;
+      z-index: 0;
+      pointer-events: none;
+    }
+    
+    .organizer-info > * {
+      position: relative;
+      z-index: 1;
+    }
+    
+    /* University/Institution logos - using local SVG files */
+    .organizer-item[data-institution="uq"] .organizer-info::after {
+      background-image: url('assets/images/uq.svg');
+    }
+    
+    .organizer-item[data-institution="lancaster"] .organizer-info::after {
+      background-image: url('assets/images/lancaster-university.svg');
+    }
+    
+    .organizer-item[data-institution="ucmerced"] .organizer-info::after {
+      background-image: url('assets/images/uc-merced.svg');
+    }
+    
+    .organizer-item[data-institution="google-deepmind"] .organizer-info::after {
+      background-image: url('assets/images/google.svg');
+    }
+    
+    .organizer-name {
+      color: #2c3e50;
+      font-weight: 600;
+      font-size: 1.3em;
+      margin-bottom: 8px;
+      text-align: left;
+    }
+    
+    .organizer-affiliation {
+      color: #6c757d;
+      font-size: 1.15em; /* Increased from 1em to 1.15em */
+      margin-bottom: 15px;
+      line-height: 1.4;
+      text-align: left;
+      font-weight: 500; /* Added font-weight for better readability */
+    }
+    
+    .organizer-bio {
+      color: #495057;
+      font-size: 1em; /* Increased from 0.9em to 1em */
+      line-height: 1.6; /* Increased from 1.5 to 1.6 for better readability */
+      margin-bottom: 20px;
+      text-align: justify;
+      text-justify: inter-word;
+      flex-grow: 1;
+    }
+    
+    .organizer-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      gap: 15px;
+      justify-content: flex-start;
+    }
+    
+    .organizer-links li a {
+      color: #3e7b54;
+      font-size: 1.3em;
+      transition: color 0.3s ease, transform 0.3s ease;
+      display: inline-block;
+    }
+    
+    .organizer-links li a:hover {
+      color: #4a7c59;
+      transform: translateY(-2px);
+    }
+    
+    /* Speaker styles (same as organizer styles for consistency) */
+    .speaker-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+      gap: 30px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    .speaker-item {
+      display: flex;
+      align-items: center;
+      padding: 30px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(39, 174, 96, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      height: 100%;
+      overflow: visible;
+    }
+    
+    .speaker-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 35px rgba(39, 174, 96, 0.15);
+    }
+    
+    .speaker-avatar {
+      flex-shrink: 0;
+      margin-right: 25px;
+    }
+    
+    .speaker-avatar img {
+      width: 160px;
+      height: 200px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #3e7b54;
+      display: block;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
+    }
+      
+  .speaker-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
+    position: relative;
+    overflow: visible;
+  }
+    
+    .speaker-info::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      width: 280px;
+      height: 350px;
+      transform: translateY(-50%);
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.08;
+      z-index: 0;
+      pointer-events: none;
+    }
+    
+    .speaker-info > * {
+      position: relative;
+      z-index: 1;
+    }
+    
+    /* Speaker institution logos - using local SVG files */
+    .speaker-item[data-institution="ucla"] .speaker-info::after {
+      background-image: url('assets/images/ucla.svg');
+    }
+    
+    .speaker-item[data-institution="buffalo"] .speaker-info::after {
+      background-image: url('assets/images/ub.svg');
+    }
+    
+    .speaker-item[data-institution="ntu"] .speaker-info::after {
+      background-image: url('assets/images/ntu.svg');
+    }
+    
+    .speaker-item[data-institution="pku"] .speaker-info::after {
+      background-image: url('assets/images/Westlake_University.svg');
+    }
+    
+    .speaker-name {
+      color: #2c3e50;
+      font-weight: 600;
+      font-size: 1.3em;
+      margin-bottom: 8px;
+      text-align: left;
+    }
+    
+    .speaker-affiliation {
+      color: #6c757d;
+      font-size: 1.15em;
+      margin-bottom: 15px;
+      line-height: 1.4;
+      text-align: left;
+      font-weight: 500;
+    }
+    
+    .speaker-bio {
+      color: #495057;
+      font-size: 1em;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      text-align: justify;
+      text-justify: inter-word;
+      flex-grow: 1;
+    }
+    
+    .speaker-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      gap: 15px;
+      justify-content: flex-start;
+    }
+    
+    .speaker-links li a {
+      color: #3e7b54;
+      font-size: 1.3em;
+      transition: color 0.3s ease, transform 0.3s ease;
+      display: inline-block;
+    }
+    
+    .speaker-links li a:hover {
+      color: #4a7c59;
+      transform: translateY(-2px);
+    }
+    
+    #footer {
+      background: #2d5a3d;
+      color: white;
+      padding: 40px 0;
+      text-align: center;
+    }
+    
+    #footer p {
+      margin: 0;
+      opacity: 0.8;
+    }
+    
+    .table th {
+      background-color: #3e7b54;
+      color: white;
+      border: none;
+      font-weight: 500;
+    }
+    
+    .table td {
+      border-color: #e9ecef;
+      vertical-align: middle;
+      text-align: center;
+      font-weight: normal;
+    }
+    
+    .table td.programme {
+      text-align: left;
+    }
+    
+    .table td.speaker {
+      text-align: left;
+    }
+    
+    /* Left align the time column */
+    .table td.time {
+      text-align: left;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+    
+/* Updated abstract toggle styles */
+    .abstract-toggle {
+      color: #3e7b54;
+      text-decoration: underline;
+      font-size: 0.9em;
+      cursor: pointer;
+      transition: color 0.3s ease;
+      margin-left: 10px;
+    }
+    
+    .abstract-toggle:hover {
+      color: #4a7c59;
+    }
+    
+    /* Slides link styles */
+    .slides-link {
+      color: #3e7b54;
+      text-decoration: underline;
+      font-size: 0.9em;
+      cursor: pointer;
+      transition: color 0.3s ease;
+      margin-left: 10px;
+    }
+    
+    .slides-link:hover {
+      color: #4a7c59;
+    }
+    .abstract-content {
+      background-color: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 4px solid #3e7b54;
+      font-size: 0.95em;
+      line-height: 1.6;
+      color: #495057;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      #hero h1 {
+        font-size: 2em;
+      }
+      
+      #hero h5 {
+        font-size: 1.2em;
+      }
+      
+      .section {
+        padding: 40px 0;
+      }
+      
+      .organizer-list, .speaker-list {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 0 15px;
+      }
+      
+      .organizer-item, .speaker-item {
+        flex-direction: column;
+        text-align: center;
+        padding: 25px 20px;
+      }
+      
+      .organizer-avatar, .speaker-avatar {
+        margin-right: 0;
+        margin-bottom: 20px;
+      }
+      
+      .organizer-avatar img, .speaker-avatar img {
+        width: 130px;
+        height: 165px;
+      }
+      
+      .organizer-info, .speaker-info {
+        text-align: center;
+      }
+      
+      .organizer-name, .speaker-name {
+        text-align: center;
+      }
+      
+      .organizer-affiliation, .speaker-affiliation {
+        text-align: center;
+        font-size: 1.1em; /* Adjusted for mobile */
+      }
+      
+      .organizer-bio, .speaker-bio {
+        font-size: 0.95em; /* Adjusted for mobile, still larger than before */
+        text-align: center;
+      }
+      
+      .organizer-links, .speaker-links {
+        justify-content: center;
+      }
+      
+      .navbar-brand {
+        font-size: 0.9em;
+      }
+      
+      .navbar-brand .iccv-logo {
+        width: 30px;
+        height: 30px;
+        font-size: 11px;
+        margin-right: 6px;
+      }
+      
+      .navbar-collapse {
+        background-color: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(10px);
+        border-radius: 0 0 10px 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        margin-top: 10px;
+        padding: 15px;
+      }
+      
+      .navbar-nav .nav-item {
+        margin: 5px 0;
+      }
+      
+      .navbar-nav .nav-link {
+        padding: 10px 15px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+      }
+      
+      .navbar-nav .nav-link:hover {
+        background-color: rgba(39, 174, 96, 0.1);
+      }
+      
+      .zoom-button {
+        margin-left: 0 !important;
+        margin-top: 10px;
+        display: block;
+        text-align: center;
+      }
+      
+      /* Mobile responsive adjustments for background logos */
+      .organizer-info::after,
+      .speaker-info::after {
+        width: 200px;
+        height: 250px;
+        right: 5px;
+        opacity: 0.05;
+      }
+    }
+    
+    /* Medium screens */
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .organizer-list, .speaker-list {
+        grid-template-columns: 1fr;
+        gap: 25px;
+      }
+      
+      .organizer-item, .speaker-item {
+        padding: 25px;
+      }
+      
+      .organizer-avatar img, .speaker-avatar img {
+        width: 140px;
+        height: 175px;
+      }
+      
+      .organizer-bio, .speaker-bio {
+        font-size: 0.95em; /* Slightly increased from 0.85em */
+      }
+      
+      .organizer-affiliation, .speaker-affiliation {
+        font-size: 1.1em; /* Adjusted for medium screens */
+      }
+      
+      .organizer-info::after,
+      .speaker-info::after {
+        width: 240px;
+        height: 300px;
+        right: 8px;
+        opacity: 0.06;
+      }
+    }
+    
+    /* Large screens */
+    @media (min-width: 1025px) and (max-width: 1400px) {
+      .organizer-list, .speaker-list {
+        grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+        gap: 30px;
+      }
+      
+      .organizer-avatar img, .speaker-avatar img {
+        width: 150px;
+        height: 190px;
+      }
+    }
+    
+    /* Extra large screens */
+    @media (min-width: 1401px) {
+      .organizer-list, .speaker-list {
+        grid-template-columns: repeat(auto-fit, minmax(650px, 1fr));
+        gap: 35px;
+      }
+      
+      .organizer-avatar img, .speaker-avatar img {
+        width: 170px;
+        height: 215px;
+      }
+    }
+
+    /* Gallery Section */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 8px;
+      margin-top: 30px;
+    }
+
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 6px;
+      cursor: pointer;
+      background: #f0f0f0;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      height: 250px;
+    }
+
+    .gallery-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.05);
+    }
+
+    /* Lightbox */
+    .gallery-lightbox {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .gallery-lightbox.active {
+      display: flex;
+    }
+
+    .gallery-lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 0 50px rgba(255, 255, 255, 0.1);
+    }
+
+    .gallery-lightbox-close {
+      position: absolute;
+      top: 30px;
+      right: 40px;
+      color: white;
+      font-size: 40px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      z-index: 10000;
+    }
+
+    .gallery-lightbox-close:hover {
+      transform: scale(1.2);
+    }
+
+    .gallery-lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: white;
+      font-size: 50px;
+      cursor: pointer;
+      padding: 20px;
+      user-select: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .gallery-lightbox-nav:hover {
+      opacity: 0.7;
+    }
+
+    .gallery-lightbox-prev {
+      left: 20px;
+    }
+
+    .gallery-lightbox-next {
+      right: 20px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 6px;
+      }
+      
+      .gallery-item {
+        height: 150px;
+      }
+      
+      .gallery-lightbox-close {
+        top: 15px;
+        right: 15px;
+        font-size: 30px;
+      }
+      
+      .gallery-lightbox-nav {
+        font-size: 35px;
+        padding: 10px;
+      }
+    }
+
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      }
+      
+      .gallery-item {
+        height: 220px;
+      }
+    }
+
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+  <div id="header" class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+      <a href="#" class="navbar-brand">
+          <div class="iccv-logo">ICCV</div>
+          Vision-Language Tutorial
+      </a>
+      <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#intro">Introduction</a></li>
+          <li class="nav-item"><a class="nav-link" href="#schedule">Schedule</a></li>
+          <li class="nav-item"><a class="nav-link" href="#organizers">Organizers</a></li>
+          <li class="nav-item"><a class="nav-link" href="#speakers">Invited Speakers</a></li>
+          <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
+          <li class="nav-item">
+            <a class="nav-link zoom-button" href="https://drive.google.com/file/d/1t5j2LousMZtKUeUgO0iARJb4JFFSSj5F/view?usp=sharing" target="_blank">
+              <i class="fas fa-video"></i> Join Zoom
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="content">
+    <div id="hero">
+      <div class="container">
+        <h1>Towards Comprehensive Reasoning in Vision-Language Models</h1>
+        <h5>ICCV 2025 Tutorial</h5>
+        <p>
+          <i class="fa fa-calendar-days"></i> 10/19/2025 8:30-12:00 (GMT-10, Honolulu Time Zone)<br>
+          <i class="fa fa-location-dot"></i> Room 318A, Hawai'i Convention Center
+        </p>
+      </div>
+    </div>
+
+    <div id="intro" class="section">
+      <div class="container">
+        <h2>Introduction</h2>
+        <p style="font-size: 1.1em; line-height: 1.8; text-align: justify;">
+          Vision-Language Models (VLMs) have achieved remarkable progress in image captioning and visual question answering, yet developing genuine reasoning capabilities remains an open challenge. Unlike recent breakthroughs in reasoning-focused LLMs, many VLMs still rely primarily on pattern recognition and struggle with compositional logic. This tutorial provides a comprehensive overview of reasoning capabilities in VLMs, focusing on the transition from basic perception to complex inference. We will explore reasoning-oriented prompting and training techniques in multimodal contexts, reasoning-focused benchmarks, and architectural innovations for visual-textual fusion. Through lectures and hands-on demonstrations, participants will gain insights into current capabilities, persistent challenges in compositional generalization and explainability, and practical guidance for implementing reasoning mechanisms. This tutorial uniquely bridges advances in LLM reasoning with the visual domain, addressing the distinct challenges of spatial information processing and providing a roadmap toward more cognitively capable vision-language systems.
+
+          Some statistics: The number of people who viewed our page on the day of our tutorial was 931. A total of 218 people bookmarked our event in the agenda builder. During the tutorial, 158 participants attended via Zoom. The onsite attendance ratio remained above 100% for most of our tutorial, with at least 200 participants joining our tutorial in person. We sincerely thank the audience for their great interest and enthusiastic participation. See onsite pictures at the bottom of this page.
+        </p>
+      </div>
+    </div>
+
+    <div id="schedule" class="section">
+      <div class="container">
+        <h2>Vision-Language Reasoning Tutorial Schedule</h2>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col" style="width: 10%;">Time</th>
+                <th scope="col" style="width: 75%;">Session</th>
+                <th scope="col" style="width: 15%;">Speaker</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="time">8:30 - 8:35</td>
+                <td class="programme">
+                  <p class="title mb-0">Opening Remark: Motivation and Overview <span class="abstract-toggle" data-bs-toggle="collapse" data-bs-target="#abstract-1" aria-expanded="false" aria-controls="abstract-1">[Abstract]</span><a href="assets/slides/iccv_tutorial_open_remark_yujun.pdf" class="slides-link" target="_blank" download>[Slides]</a></p>
+                  <div class="collapse mt-2" id="abstract-1">
+                    <div class="abstract-content">
+                      <strong>Abstract:</strong> Welcome to our comprehensive tutorial on reasoning in vision-language models. This opening session will set the stage by discussing the motivation behind developing reasoning capabilities in VLMs and provide an overview of the day's agenda, highlighting key challenges and opportunities in the field.
+                    </div>
+                  </div>
+                </td>
+                <td class="speaker">
+                  <p class="speaker-text"><a href="https://vanoracai.github.io/" target="_blank">Yujun Cai</a></p>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="time">8:35 - 9:10</td>
+                <td class="programme">
+                  <p class="title mb-0">Invited Talk: Native Multimodal Models: Architecture, Post-Training, and Evaluation <span class="abstract-toggle" data-bs-toggle="collapse" data-bs-target="#abstract-4" aria-expanded="false" aria-controls="abstract-4">[Abstract]</span><a href="assets/slides/ziweiliu.pdf" class="slides-link" target="_blank" download>[Slides]</a></p>
+                  <div class="collapse mt-2" id="abstract-4">
+                    <div class="abstract-content">
+                      <strong>Abstract:</strong> As we strive toward more capable and general-purpose AI systems, the integration of vision and language in multimodal models (VLMs) has become a pivotal area of research. This talk explores three complementary advances that collectively push the boundaries of what native LMMs can achieve, spanning their architecture, post-training, and evaluation. We first introduce NEO, a family of native LMMs that seamlessly integrate visual and linguistic features within a shared semantic space, outperforming traditional modular models with only 390M image-text pairs. Next, we present Visual Jigsaw, a self-supervised post-training framework that enhances the visual reasoning capabilities of LMMs through a reinforcement learning approach, improving fine-grained perception, temporal reasoning, and 3D spatial understanding. Finally, we introduce RealUnify, a novel benchmark designed to assess the bidirectional synergy between understanding and generation in unified models, revealing that current architectures struggle to fully leverage this integration. Together, these works offer a comprehensive perspective on the challenges and opportunities in advancing unified multimodal models.
+                    </div>
+                  </div>
+                </td>
+                <td class="speaker">
+                  <p class="speaker-text"><a href="https://liuziwei7.github.io/" target="_blank">Ziwei Liu</a></p>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="time">9:10 - 9:35</td>
+                <td class="programme">
+                  <p class="title mb-0">Video-TT Challenge: Towards Advanced Video Reasoning and Understanding <span class="abstract-toggle" data-bs-toggle="collapse" data-bs-target="#abstract-2" aria-expanded="false" aria-controls="abstract-2">[Abstract]</span><a href="assets/slides/video_tt_challenge.pdf" class="slides-link" target="_blank" download>[Slides]</a></p>
+                  <div class="collapse mt-2" id="abstract-2">
+                    <div class="abstract-content">
+                      <strong>Abstract:</strong> Join us for the exciting conclusion of the Video-TT Challenge, where we will announce results and recognize outstanding achievements in video reasoning and understanding. This session will showcase innovative approaches from participating teams and highlight breakthrough methodologies that advance the state-of-the-art in video analysis and temporal reasoning. See more details at: https://sites.google.com/view/video-tt-challenge
+                    </div>
+                  </div>
+                </td>
+                <td class="speaker">
+                  <p class="speaker-text"><a href="https://sites.google.com/view/video-tt-challenge" target="_blank">Yuhao Dong, Yuanhan Zhang, Ziwei Liu, and Representative Teams </a></p>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="time">9:35 - 10:10</td>
+                <td class="programme">
+                  <p class="title mb-0">Invited Talk: Reasoning in Multimodal GUI Agents: An Exploration-Driven Perspective <span class="abstract-toggle" data-bs-toggle="collapse" data-bs-target="#abstract-3" aria-expanded="false" aria-controls="abstract-3">[Abstract]</span><a href="assets/slides/chizhang.pdf" class="slides-link" target="_blank" download>[Slides]</a></p>
+                  <div class="collapse mt-2" id="abstract-3">
+                    <div class="abstract-content">
+                      <strong>Abstract:</strong> This talk explores how multimodal GUI agents can develop sophisticated reasoning capabilities through exploration-driven learning. We will discuss novel approaches to understanding user interfaces, spatial relationships, and interaction patterns, highlighting how agents can learn to navigate complex digital environments through systematic exploration and reasoning.
+                    </div>
+                  </div>
+                </td>
+                <td class="speaker">
+                  <p class="speaker-text"><a href="https://icoz69.github.io/" target="_blank">Chi Zhang</a></p>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="time">10:10 - 10:45</td>
+                <td class="programme">
+                  <p class="title mb-0">Invited Talk: Mathematical Reasoning in Visual Contexts <span class="abstract-toggle" data-bs-toggle="collapse" data-bs-target="#abstract-5" aria-expanded="false" aria-controls="abstract-5">[Abstract]</span><a href="assets/slides/kai-wei-chang-math-reasoning.pdf" class="slides-link" target="_blank" download>[Slides]</a></p>
+                  <div class="collapse mt-2" id="abstract-5">
+                    <div class="abstract-content">
+                      <strong>Abstract:</strong> Mathematical reasoning presents unique challenges when combined with visual information. This talk will explore how vision-language models can be enhanced to solve mathematical problems that require understanding geometric relationships, interpreting charts and graphs, and reasoning about spatial configurations in mathematical contexts.
+                    </div>
+                  </div>
+                </td>
+                <td class="speaker">
+                  <p class="speaker-text"><a href="https://web.cs.ucla.edu/~kwchang/" target="_blank">Kai-Wei Chang</a></p>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="time">10:45 - 11:20</td>
+                <td class="programme">
+                  <p class="title mb-0">Invited Talk: Chain-of-Look Visual Reasoning <span class="abstract-toggle" data-bs-toggle="collapse" data-bs-target="#abstract-6" aria-expanded="false" aria-controls="abstract-6">[Abstract]</span><a href="assets/slides/junsong.pdf" class="slides-link" target="_blank" download>[Slides]</a></p>
+                  <div class="collapse mt-2" id="abstract-6">
+                    <div class="abstract-content">
+                      <strong>Abstract:</strong> While multi-modal foundation models excel at describing images and answering simple questions, they still struggle at tasks requiring deliberate, step-by-step visual reasoning—including a capability as basic as accurately counting objects in a visual scene. This limitation stems from a fundamental reliance on one-shot, end-to-end inference, which bypasses the structured, iterative process inherent to human visual cognition. We introduce Chain-of-Look, a new visual reasoning paradigm that addresses this weakness by modeling sequential visual understanding. Rather than relying on direct regression, our method guides the model through a structured chain of visual attention, mirroring the progressive nature of human analysis. This approach leads to more accurate, robust, and explainable reasoning in challenging scenes. In initial benchmarks, Chain-of-Look outperforms both specialized models and general-purpose multi-modal systems at visual counting of dense surgical instruments. We further demonstrate its potential to benefit higher-level tasks such as human-object interaction modeling, establishing a new path toward more interpretable and reliable visual AI.
+                    </div>
+                  </div>
+                </td>
+                <td class="speaker">
+                  <p class="speaker-text"><a href="https://cse.buffalo.edu/~jsyuan/" target="_blank">Junsong Yuan</a></p>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="time">11:20 - 11:55</td>
+                <td class="programme">
+                  <p class="title mb-0">Invited Talk: Grounding Anything in Images and Videos for Comprehensive Reasoning<span class="abstract-toggle" data-bs-toggle="collapse" data-bs-target="#abstract-7" aria-expanded="false" aria-controls="abstract-7">[Abstract]</span><a href="assets/slides/minghsuan.pdf" class="slides-link" target="_blank" download>[Slides]</a></p>
+                  <div class="collapse mt-2" id="abstract-7">
+                    <div class="abstract-content">
+                      <strong>Abstract:</strong> Understanding and reasoning about the visual world requires more than recognizing objects—it demands grounding language, actions, and abstract concepts in images and videos in a unified and interpretable way. This talk explores the emerging paradigm of comprehensive grounding, which bridges perception and reasoning by linking every visual element—objects, attributes, spatial relations, temporal dynamics, and textual cues—to structured representations that large models can reason over. I will present recent advances in grounding visual-language models that can “ground anything,” from static objects in images to dynamic events in videos, enabling consistent interpretation across modalities and tasks. The talk will also discuss how such grounding facilitates high-level reasoning, including question answering, action understanding, and causal inference, moving toward general-purpose vision-language agents that integrate perception, knowledge, and reasoning in a cohesive framework.
+                    </div>
+                  </div>
+                </td>
+                <td class="speaker">
+                  <p class="speaker-text"><a href="https://faculty.ucmerced.edu/mhyang/" target="_blank">Ming-Hsuan Yang</a></p>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="time">11:55 - 12:00</td>
+                <td class="programme">
+                  <p class="title mb-0">Closing Remark <span class="abstract-toggle" data-bs-toggle="collapse" data-bs-target="#abstract-8" aria-expanded="false" aria-controls="abstract-8">[Abstract]</span><a href="assets/slides/closing-remark.pdf" class="slides-link" target="_blank" download>[Slides]</a></p>
+                  <div class="collapse mt-2" id="abstract-8">
+                    <div class="abstract-content">
+                      <strong>Abstract:</strong> Our tutorial concludes with a synthesis of key insights, future research directions, and practical takeaways. This closing session will summarize the day's discussions, highlight emerging trends in vision-language reasoning, and provide guidance for researchers and practitioners looking to advance this exciting field.
+                    </div>
+                  </div>
+                </td>                
+                <td class="speaker">
+                  <p class="speaker-text"><a href="https://wangywust.github.io/" target="_blank">Yiwei Wang</a></p>
+                </td>              
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="organizers" class="section">
+      <div class="container">
+        <h2>Organizers</h2>
+        <div class="organizer-list">
+          <div class="organizer-item" data-institution="uq">
+            <div class="organizer-avatar">
+              <img src="assets/images/avatars/yujuncai.png" alt="Yujun Cai">
+            </div>
+            <div class="organizer-info">
+              <h5 class="organizer-name">Yujun Cai</h5>
+              <p class="organizer-affiliation">Lecturer at University of Queensland</p>
+              <p class="organizer-bio">Dr. Yujun Cai is a Lecturer (Assistant Professor) in the University of Queensland, Australia. Previously, she was a Research Scientist at Meta Reality Labs in Seattle. She obtained her Ph.D. degree from Nanyang Technological University in 2021. Her research interests lie in multi-modal understanding and trust-worthy large models. </p>
+              <ul class="organizer-links">
+                <li><a href="//vanoracai.github.io/" target="_blank"><i class="fa fa-house"></i></a></li>
+                <li><a href="https://scholar.google.com/citations?user=TE7lbQwAAAAJ" target="_blank"><i class="fas fa-graduation-cap"></i></a></li>
+                <li><a href="//vanoracai.github.io/" target="_blank"><i class="fab fa-github"></i></a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="organizer-item" data-institution="lancaster">
+            <div class="organizer-avatar">
+              <img src="assets/images/avatars/junliu.jpg" alt="Jun Liu">
+            </div>
+            <div class="organizer-info">
+              <h5 class="organizer-name">Jun Liu</h5>
+              <p class="organizer-affiliation">Professor at Lancaster University</p>
+              <p class="organizer-bio">Dr. Jun Liu is Professor and Chair in Digital Health at the School of Computing and Communications, Lancaster University. He earned his PhD from Nanyang Technological University in 2019, subsequently serving as faculty at Singapore University of Technology and Design from 2019 to 2024. Prior to his academic career, he worked at Tencent from 2014 to 2015.</p>
+              <ul class="organizer-links">
+                <li><a href="https://wp.lancs.ac.uk/vl/" target="_blank"><i class="fa fa-house"></i></a></li>
+                <li><a href="https://scholar.google.com/citations?user=Q5Ild8UAAAAJ" target="_blank"><i class="fas fa-graduation-cap"></i></a></li>
+                <li><a href="https://wp.lancs.ac.uk/vl/" target="_blank"><i class="fab fa-github"></i></a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="organizer-item" data-institution="ucmerced">
+            <div class="organizer-avatar">
+              <img src="assets/images/avatars/yiweiwang.jpg" alt="Yiwei Wang">
+            </div>
+            <div class="organizer-info">
+              <h5 class="organizer-name">Yiwei Wang</h5>
+              <p class="organizer-affiliation">Assistant Professor at University of California, Merced</p>
+              <p class="organizer-bio">Dr. Yiwei Wang was an Applied Scientist in Amazon (Seattle) in 2023 and a Postdoc in UCLA NLP Group in 2024. He obtained his Ph.D. degree from National University of Singapore in 2023. Currently, he leads the UC Merced NLP Lab, where his team explores cutting-edge approaches to diffusion llms, reasoning multi-modal llms, and their applications in medicine, advertising, risk detection, signal processing, etc. </p>
+              <ul class="organizer-links">
+                <li><a href="https://wangywust.github.io/" target="_blank"><i class="fa fa-house"></i></a></li>
+                <li><a href="https://scholar.google.com/citations?user=Sh9QvBkAAAAJ" target="_blank"><i class="fas fa-graduation-cap"></i></a></li>
+                <li><a href="https://wangywust.github.io/" target="_blank"><i class="fab fa-github"></i></a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="organizer-item" data-institution="ucmerced">
+            <div class="organizer-avatar">
+              <img src="assets/images/avatars/minghsuanyang.jpg" alt="Ming-Hsuan Yang">
+            </div>
+            <div class="organizer-info">
+              <h5 class="organizer-name">Ming-Hsuan Yang</h5>
+              <p class="organizer-affiliation">Professor at University of California, Merced</p>
+              <p class="organizer-bio">Ming-Hsuan Yang is a Professor in Electrical Engineering and Computer Science at University of California, Merced. He is a Fellow of the IEEE, ACM and AAAI.</p>
+              <ul class="organizer-links">
+                <li><a href="https://faculty.ucmerced.edu/mhyang/" target="_blank"><i class="fa fa-house"></i></a></li>
+                <li><a href="https://scholar.google.com/citations?hl=en&user=p9-ohHsAAAAJ" target="_blank"><i class="fas fa-graduation-cap"></i></a></li>
+                <li><a href="https://faculty.ucmerced.edu/mhyang/" target="_blank"><i class="fab fa-github"></i></a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="speakers" class="section">
+      <div class="container">
+        <h2>Invited Speakers</h2>
+        <div class="speaker-list">
+
+          <div class="speaker-item" data-institution="ucla">
+            <div class="speaker-avatar">
+              <img src="assets/images/avatars/kaiweichang.jpg" alt="Kai-Wei Chang">
+            </div>
+            <div class="speaker-info">
+              <h5 class="speaker-name">Kai-Wei Chang</h5>
+              <p class="speaker-affiliation">Associate Professor at University of California, Los Angeles</p>
+              <p class="speaker-bio">Dr. Kai-Wei Chang is an Associate Professor at UCLA specializing in natural language processing, machine learning, and multimodal reasoning. His research particularly focuses on mathematical reasoning, structured prediction, and developing robust AI systems that can handle complex reasoning tasks.</p>
+              <ul class="speaker-links">
+                <li><a href="https://web.cs.ucla.edu/~kwchang/" target="_blank"><i class="fa fa-house"></i></a></li>
+                <li><a href="https://scholar.google.com/citations?hl=en&user=fqDBtzYAAAAJ" target="_blank"><i class="fas fa-graduation-cap"></i></a></li>
+                <li><a href="https://github.com/kwchang" target="_blank"><i class="fab fa-github"></i></a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="speaker-item" data-institution="buffalo">
+            <div class="speaker-avatar">
+              <img src="assets/images/avatars/junsongyuan.jpg" alt="Junsong Yuan">
+            </div>
+            <div class="speaker-info">
+              <h5 class="speaker-name">Junsong Yuan</h5>
+              <p class="speaker-affiliation">Professor at University at Buffalo, SUNY</p>
+              <p class="speaker-bio">Dr. Junsong Yuan is a Professor at University at Buffalo, specializing in computer vision, pattern recognition, and multimedia analysis. His research encompasses video understanding, human activity recognition, and multimodal learning with applications in surveillance, healthcare, and autonomous systems.</p>
+              <ul class="speaker-links">
+                <li><a href="https://cse.buffalo.edu/~jsyuan/" target="_blank"><i class="fa fa-house"></i></a></li>
+                <li><a href="https://scholar.google.com/citations?hl=en&user=fJ7seq0AAAAJ" target="_blank"><i class="fas fa-graduation-cap"></i></a></li>
+                <li><a href="https://github.com/jsyuan" target="_blank"><i class="fab fa-github"></i></a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="speaker-item" data-institution="ntu">
+            <div class="speaker-avatar">
+              <img src="assets/images/avatars/ziweiliu.png" alt="Ziwei Liu">
+            </div>
+            <div class="speaker-info">
+              <h5 class="speaker-name">Ziwei Liu</h5>
+              <p class="speaker-affiliation">Associate Professor at Nanyang Technological University</p>
+              <p class="speaker-bio">Dr. Ziwei Liu is an Assocaite Professor at NTU and leads the LMMs-Lab initiative. His research focuses on large multimodal models, computer vision, and machine learning. He has made significant contributions to visual understanding, generative models, and multimodal intelligence systems.</p>
+              <ul class="speaker-links">
+                <li><a href="https://liuziwei7.github.io/" target="_blank"><i class="fa fa-house"></i></a></li>
+                <li><a href="https://scholar.google.com/citations?user=lc45xlcAAAAJ" target="_blank"><i class="fas fa-graduation-cap"></i></a></li>
+                <li><a href="https://github.com/liuziwei7" target="_blank"><i class="fab fa-github"></i></a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="speaker-item" data-institution="pku">
+            <div class="speaker-avatar">
+              <img src="assets/images/avatars/chizhang.jpg" alt="Chi Zhang">
+            </div>
+            <div class="speaker-info">
+              <h5 class="speaker-name">Chi Zhang</h5>
+              <p class="speaker-affiliation">Assistant Professor at Westlake University</p>
+              <p class="speaker-bio">Dr. Chi Zhang is an Assistant Professor at Westlake University, focusing on multimodal AI and embodied intelligence. His research spans GUI automation, visual reasoning, and human-computer interaction, with particular expertise in developing intelligent agents that can understand and interact with digital interfaces.</p>
+              <ul class="speaker-links">
+                <li><a href="https://icoz69.github.io/" target="_blank"><i class="fa fa-house"></i></a></li>
+                <li><a href="https://scholar.google.com/citations?hl=zh-CN&user=J4s398EAAAAJ" target="_blank"><i class="fas fa-graduation-cap"></i></a></li>
+                <li><a href="https://github.com/icoz69" target="_blank"><i class="fab fa-github"></i></a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="speaker-item" data-institution="ntu">
+            <div class="speaker-avatar">
+              <img src="assets/images/avatars/yuhaodong.jpg" alt="Yuhao Dong">
+            </div>
+            <div class="speaker-info">
+              <h5 class="speaker-name">Yuhao Dong</h5>
+              <p class="speaker-affiliation">Ph.D. Student at Nanyang Technological University</p>
+              <p class="speaker-bio">Yuhao Dong currently working on the topic of multimodal learning and his long-term goal is to build general foundation models. Recently he is focusing on vision-language model and unified visual models.</p>
+              <ul class="speaker-links">
+                <li><a href="https://github.com/dongyh20" target="_blank"><i class="fa fa-house"></i></a></li>
+                <li><a href="https://scholar.google.com/citations?user=kMui170AAAAJ&hl=zh-CN" target="_blank"><i class="fas fa-graduation-cap"></i></a></li>
+                <li><a href="https://github.com/dongyh20" target="_blank"><i class="fab fa-github"></i></a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="speaker-item" data-institution="ntu">
+            <div class="speaker-avatar">
+              <img src="assets/images/avatars/yuanhanzhang.jpg" alt="Yuanhan Zhang">
+            </div>
+            <div class="speaker-info">
+              <h5 class="speaker-name">Yuanhan Zhang</h5>
+              <p class="speaker-affiliation">Ph.D. Student at Nanyang Technological University</p>
+              <p class="speaker-bio">Yuanhan Zhang's research interests lie in computer vision and deep learning. His work focuses on adapting foundation models—from vision to multimodal—for real-world applications, including benchmarking model performance and adapting models through parameter-efficient tuning, in-context learning, and instruction tuning.</p>
+              <ul class="speaker-links">
+                <li><a href="https://zhangyuanhan-ai.github.io/" target="_blank"><i class="fa fa-house"></i></a></li>
+                <li><a href="https://scholar.google.com/citations?user=g6grFy0AAAAJ&hl" target="_blank"><i class="fas fa-graduation-cap"></i></a></li>
+                <li><a href="https://zhangyuanhan-ai.github.io/" target="_blank"><i class="fab fa-github"></i></a></li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="gallery" class="section">
+    <div class="container">
+      <h2>Gallery</h2>
+      <div class="gallery-grid" id="galleryGrid">
+        <!-- Photos will be loaded dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <div id="footer">
+    <div class="container">
+      <p>&copy;2025 <em>Towards Comprehensive Reasoning in Vision-Language Models</em> ICCV Tutorial</p>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    $(document).on('scroll', function() {
+      let currentOffset = $(window).scrollTop() + 80,
+          currentSection = "",
+          sections = ["intro", "schedule", "organizers", "speakers", "gallery"];
+
+      for (let i = 0; i < sections.length; ++i) {
+        if ($('#' + sections[i]).length && currentOffset < $('#' + sections[i]).offset().top) {
+          break;
+        }
+        currentSection = sections[i];
+      }
+
+      let $navbar = $('.navbar'),
+          $navLinks = $navbar.find('a');
+
+      $navLinks.parent().removeClass('active');
+      $navLinks.each(function() {
+        if ($(this).attr('href') === '#' + currentSection) {
+          $(this).parent().addClass('active');
+        }
+      });
+    });
+
+    // Gallery Photo Wall
+    (function() {
+      const galleryFolder = 'assets/gallery/'; // 修改为你的照片文件夹路径
+      const photoFiles = [
+        'photo1.jpg',
+        'photo2.jpg',
+        'photo3.jpg',
+        'photo4.jpg',
+        'photo5.jpg',
+        'photo6.jpg',
+        'photo7.jpg',
+        'photo8.jpg',
+        'photo9.jpg',
+        'photo10.jpg',
+        'photo11.jpg',
+        'photo12.jpg',
+        'photo13.jpg',
+        'photo14.jpg',
+        'photo15.jpg',
+        'photo16.jpg',
+        'photo17.jpg',
+        'photo18.jpg',
+        'photo19.jpg',
+        'photo20.jpg',
+        'photo21.jpg',
+        'photo22.jpg',
+        'photo23.jpg',
+        'photo24.jpg',
+        'photo25.jpg',
+        'photo26.jpg',
+        'photo27.jpg',
+        'photo28.jpg',
+        'photo29.jpg',
+        'photo30.jpg',
+        'photo31.jpg',
+        // 添加更多照片文件名
+      ];
+
+      const galleryGrid = document.getElementById('galleryGrid');
+      let currentImageIndex = 0;
+
+      // Create lightbox
+      const lightbox = document.createElement('div');
+      lightbox.className = 'gallery-lightbox';
+      lightbox.innerHTML = `
+        <span class="gallery-lightbox-close">&times;</span>
+        <span class="gallery-lightbox-nav gallery-lightbox-prev">&#10094;</span>
+        <img src="" alt="Gallery Image">
+        <span class="gallery-lightbox-nav gallery-lightbox-next">&#10095;</span>
+      `;
+      document.body.appendChild(lightbox);
+
+      const lightboxImg = lightbox.querySelector('img');
+      const closeBtn = lightbox.querySelector('.gallery-lightbox-close');
+      const prevBtn = lightbox.querySelector('.gallery-lightbox-prev');
+      const nextBtn = lightbox.querySelector('.gallery-lightbox-next');
+
+      // Load photos
+      photoFiles.forEach((photo, index) => {
+        const item = document.createElement('div');
+        item.className = 'gallery-item';
+        item.innerHTML = `<img src="${galleryFolder}${photo}" alt="Gallery Photo ${index + 1}">`;
+        item.addEventListener('click', () => openLightbox(index));
+        galleryGrid.appendChild(item);
+      });
+
+      function openLightbox(index) {
+        currentImageIndex = index;
+        lightboxImg.src = galleryFolder + photoFiles[index];
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      function showNext() {
+        currentImageIndex = (currentImageIndex + 1) % photoFiles.length;
+        lightboxImg.src = galleryFolder + photoFiles[currentImageIndex];
+      }
+
+      function showPrev() {
+        currentImageIndex = (currentImageIndex - 1 + photoFiles.length) % photoFiles.length;
+        lightboxImg.src = galleryFolder + photoFiles[currentImageIndex];
+      }
+
+      closeBtn.addEventListener('click', closeLightbox);
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+      nextBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showNext();
+      });
+      prevBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showPrev();
+      });
+
+      // Keyboard navigation
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowRight') showNext();
+        if (e.key === 'ArrowLeft') showPrev();
+      });
+    })();
+
+  </script>
+</body>
+</html>
