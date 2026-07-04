@@ -1,0 +1,1379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>From Perception to Simulation: The Emergence of World Models in Multi-modal Reasoning | CVPR 2026</title>
+  <link rel="icon" type="image/svg+xml" href="assets/images/cvpr.svg">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    body {
+      padding-top: 70px;
+      margin: 0;
+    }
+    
+    #header {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      height: 70px;
+    }
+    
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #2c3e50;
+      text-decoration: none;
+    }
+    
+    .navbar-brand:hover {
+      color: #2d6cbf;
+    }
+    
+    /* Fallback CVPR logo using CSS */
+    .iccv-logo {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #2d8cff 0%, #0066cc 100%);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 14px;
+      margin-right: 10px;
+    }
+    
+    .navbar-toggler {
+      border: none;
+      padding: 4px 8px;
+    }
+    
+    .navbar-toggler:focus {
+      box-shadow: none;
+    }
+    
+    .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2833, 37, 41, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+    
+    .nav-link:hover {
+      color: #2d8cff !important;
+    }
+    
+    .navbar-nav .nav-item.active .nav-link {
+      color: #2d8cff !important;
+      font-weight: 600;
+    }
+    
+    .zoom-button {
+      background: linear-gradient(135deg, #2d8cff 0%, #0066cc 100%) !important;
+      color: white !important;
+      padding: 8px 20px !important;
+      border-radius: 25px !important;
+      font-weight: 600 !important;
+      transition: all 0.3s ease !important;
+      margin-left: 15px;
+      white-space: nowrap;
+    }
+    
+    .zoom-button:hover {
+      background: linear-gradient(135deg, #0066cc 0%, #004c99 100%) !important;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(45, 140, 255, 0.3);
+    }
+    
+    .zoom-button i {
+      margin-right: 6px;
+    }
+    
+    #hero {
+      background: 
+        radial-gradient(ellipse at 50% 40%,
+          rgba(25, 70, 140, 0.92) 0%, 
+          rgba(30, 90, 160, 0.65) 60%, 
+          rgba(50, 130, 200, 0.2) 100%),
+        url('assets/images/CVPR_Denver_2026.jpg') center center / cover no-repeat;
+      color: white;
+      padding: 85px 0;
+      text-align: center;
+      margin-top: 0;
+    }
+    
+    #hero h1 {
+      font-size: 2.5em;
+      font-weight: 300;
+      margin-bottom: 20px;
+    }
+    
+    #hero h5 {
+      font-size: 1.5em;
+      margin-bottom: 30px;
+      opacity: 0.9;
+    }
+    
+    #hero p {
+      font-size: 1.1em;
+      opacity: 0.8;
+    }
+    
+    .section {
+      padding: 60px 0;
+    }
+    
+    .section:nth-child(even) {
+      background-color: #f0f4fb;
+    }
+    
+    .section h2 {
+      color: #1a3d6e;
+      margin-bottom: 40px;
+      font-weight: 300;
+    }
+    
+    .table-striped > tbody > tr:nth-of-type(odd) > td {
+      background-color: rgba(45, 108, 191, 0.05);
+    }
+    
+    .programme .title {
+      font-weight: normal;
+      color: #2c3e50;
+      margin: 0;
+      font-size: 1.1em;
+    }
+    
+    .speaker-text {
+      color: #000000;
+      font-weight: 500;
+      font-size: 1em;
+      margin: 0;
+      line-height: 1.4;
+    }
+    
+    .speaker-text a {
+      color: #000000;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      font-weight: 600;
+    }
+    
+    .speaker-text a:hover {
+      color: #2d6cbf;
+      text-decoration: underline;
+    }
+    
+    .organizer-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+      gap: 30px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    .organizer-item {
+      display: flex;
+      align-items: center;
+      padding: 30px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(45, 108, 191, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      height: 100%;
+      overflow: visible;
+    }
+    
+    .organizer-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 35px rgba(45, 108, 191, 0.18);
+    }
+    
+    .organizer-avatar {
+      flex-shrink: 0;
+      margin-right: 25px;
+    }
+    
+    .organizer-avatar img {
+      width: 160px;
+      height: 200px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #2d6cbf;
+      display: block;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
+    }
+    
+    .organizer-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: left;
+      position: relative;
+      overflow: visible;
+    }
+    
+    .organizer-info::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      width: 280px;
+      height: 350px;
+      transform: translateY(-50%);
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.08;
+      z-index: 0;
+      pointer-events: none;
+    }
+    
+    .organizer-info > * {
+      position: relative;
+      z-index: 1;
+    }
+    
+    /* University/Institution logos - using local SVG files */
+    .organizer-item[data-institution="ant-uq"] .organizer-info::after {
+      background-image: url('assets/images/ant.svg'), url('assets/images/uq.svg');
+      background-size: 45% auto, 45% auto;
+      background-position: 20% center, 80% center;
+    }
+    
+    .organizer-item[data-institution="monash"] .organizer-info::after {
+      background-image: url('assets/images/monash.svg');
+    }
+    
+    .organizer-item[data-institution="ucmerced"] .organizer-info::after {
+      background-image: url('assets/images/uc-merced.svg');
+    }
+    
+    .organizer-item[data-institution="google-deepmind"] .organizer-info::after {
+      background-image: url('assets/images/google.svg');
+    }
+    
+    .organizer-name {
+      color: #1a3d6e;
+      font-weight: 600;
+      font-size: 1.3em;
+      margin-bottom: 8px;
+      text-align: left;
+    }
+    
+    .organizer-affiliation {
+      color: #5a7fa8;
+      font-size: 1.15em;
+      margin-bottom: 15px;
+      line-height: 1.4;
+      text-align: left;
+      font-weight: 500;
+    }
+    
+    .organizer-bio {
+      color: #495057;
+      font-size: 1em;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      text-align: justify;
+      text-justify: inter-word;
+      flex-grow: 1;
+    }
+    
+    .organizer-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      gap: 15px;
+      justify-content: flex-start;
+    }
+    
+    .organizer-links li a {
+      color: #2d6cbf;
+      font-size: 1.3em;
+      transition: color 0.3s ease, transform 0.3s ease;
+      display: inline-block;
+    }
+    
+    .organizer-links li a:hover {
+      color: #3a7acc;
+      transform: translateY(-2px);
+    }
+    
+    /* Speaker styles */
+    .speaker-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+      gap: 30px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    
+    .speaker-item {
+      display: flex;
+      align-items: center;
+      padding: 30px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(45, 108, 191, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      height: 100%;
+      overflow: visible;
+    }
+    
+    .speaker-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 35px rgba(45, 108, 191, 0.18);
+    }
+    
+    .speaker-avatar {
+      flex-shrink: 0;
+      margin-right: 25px;
+    }
+    
+    .speaker-avatar img {
+      width: 160px;
+      height: 200px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #2d6cbf;
+      display: block;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
+    }
+      
+  .speaker-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
+    position: relative;
+    overflow: visible;
+  }
+    
+    .speaker-info::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      width: 280px;
+      height: 350px;
+      transform: translateY(-50%);
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.08;
+      z-index: 0;
+      pointer-events: none;
+    }
+    
+    .speaker-info > * {
+      position: relative;
+      z-index: 1;
+    }
+    
+    /* Speaker institution logos */
+    .speaker-item[data-institution="ucla"] .speaker-info::after {
+      background-image: url('assets/images/ucla.svg');
+    }
+
+    .speaker-item[data-institution="nvidia"] .speaker-info::after {
+      background-image: url('assets/images/nvidia.svg');
+    }
+
+    .speaker-item[data-institution="rekursive"] .speaker-info::after {
+      background-image: url('assets/images/rekursive.svg');
+    }
+    
+    .speaker-item[data-institution="buffalo"] .speaker-info::after {
+      background-image: url('assets/images/ub.svg');
+    }
+    
+    .speaker-item[data-institution="ntu"] .speaker-info::after {
+      background-image: url('assets/images/ntu.svg');
+    }
+    
+    .speaker-item[data-institution="pku"] .speaker-info::after {
+      background-image: url('assets/images/Westlake_University.svg');
+    }
+
+    .speaker-item[data-institution="google-deepmind"] .speaker-info::after {
+      background-image: url('assets/images/google.svg');
+    }
+
+    .speaker-item[data-institution="ucmerced"] .speaker-info::after {
+      background-image: url('assets/images/uc-merced.svg');
+    }
+    
+    .speaker-name {
+      color: #1a3d6e;
+      font-weight: 600;
+      font-size: 1.3em;
+      margin-bottom: 8px;
+      text-align: left;
+    }
+    
+    .speaker-affiliation {
+      color: #5a7fa8;
+      font-size: 1.15em;
+      margin-bottom: 15px;
+      line-height: 1.4;
+      text-align: left;
+      font-weight: 500;
+    }
+    
+    .speaker-bio {
+      color: #495057;
+      font-size: 1em;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      text-align: justify;
+      text-justify: inter-word;
+      flex-grow: 1;
+    }
+    
+    .speaker-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      gap: 15px;
+      justify-content: flex-start;
+    }
+    
+    .speaker-links li a {
+      color: #2d6cbf;
+      font-size: 1.3em;
+      transition: color 0.3s ease, transform 0.3s ease;
+      display: inline-block;
+    }
+    
+    .speaker-links li a:hover {
+      color: #3a7acc;
+      transform: translateY(-2px);
+    }
+    
+    #footer {
+      background: #1a3d6e;
+      color: white;
+      padding: 40px 0;
+      text-align: center;
+    }
+    
+    #footer p {
+      margin: 0;
+      opacity: 0.8;
+    }
+    
+    .table th {
+      background-color: #1e5ba8;
+      color: white;
+      border: none;
+      font-weight: 500;
+    }
+    
+    .table td {
+      border-color: #e9ecef;
+      vertical-align: middle;
+      text-align: center;
+      font-weight: normal;
+    }
+    
+    .table td.programme {
+      text-align: left;
+    }
+    
+    .table td.speaker {
+      text-align: left;
+    }
+    
+    /* Left align the time column */
+    .table td.time {
+      text-align: left;
+      font-weight: 600;
+      color: #1a3d6e;
+    }
+
+    /* Abstract toggle styles */
+    .abstract-toggle {
+      color: #2d6cbf;
+      text-decoration: underline;
+      font-size: 0.9em;
+      cursor: pointer;
+      transition: color 0.3s ease;
+      margin-left: 10px;
+    }
+    
+    .abstract-toggle:hover {
+      color: #3a7acc;
+    }
+    
+    /* Slides link styles */
+    .slides-link {
+      color: #2d6cbf;
+      text-decoration: underline;
+      font-size: 0.9em;
+      cursor: pointer;
+      transition: color 0.3s ease;
+      margin-left: 10px;
+    }
+    
+    .slides-link:hover {
+      color: #3a7acc;
+    }
+
+    .abstract-content {
+      background-color: #f0f4fb;
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 4px solid #2d6cbf;
+      font-size: 0.95em;
+      line-height: 1.6;
+      color: #495057;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      #hero h1 {
+        font-size: 2em;
+      }
+      
+      #hero h5 {
+        font-size: 1.2em;
+      }
+      
+      .section {
+        padding: 40px 0;
+      }
+      
+      .organizer-list, .speaker-list {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 0 15px;
+      }
+      
+      .organizer-item, .speaker-item {
+        flex-direction: column;
+        text-align: center;
+        padding: 25px 20px;
+      }
+      
+      .organizer-avatar, .speaker-avatar {
+        margin-right: 0;
+        margin-bottom: 20px;
+      }
+      
+      .organizer-avatar img, .speaker-avatar img {
+        width: 130px;
+        height: 165px;
+      }
+      
+      .organizer-info, .speaker-info {
+        text-align: center;
+      }
+      
+      .organizer-name, .speaker-name {
+        text-align: center;
+      }
+      
+      .organizer-affiliation, .speaker-affiliation {
+        text-align: center;
+        font-size: 1.1em;
+      }
+      
+      .organizer-bio, .speaker-bio {
+        font-size: 0.95em;
+        text-align: center;
+      }
+      
+      .organizer-links, .speaker-links {
+        justify-content: center;
+      }
+      
+      .navbar-brand {
+        font-size: 0.9em;
+      }
+      
+      .navbar-brand .iccv-logo {
+        width: 30px;
+        height: 30px;
+        font-size: 11px;
+        margin-right: 6px;
+      }
+      
+      .navbar-collapse {
+        background-color: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(10px);
+        border-radius: 0 0 10px 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        margin-top: 10px;
+        padding: 15px;
+      }
+      
+      .navbar-nav .nav-item {
+        margin: 5px 0;
+      }
+      
+      .navbar-nav .nav-link {
+        padding: 10px 15px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+      }
+      
+      .navbar-nav .nav-link:hover {
+        background-color: rgba(45, 108, 191, 0.1);
+      }
+      
+      .zoom-button {
+        margin-left: 0 !important;
+        margin-top: 10px;
+        display: block;
+        text-align: center;
+      }
+      
+      .organizer-info::after,
+      .speaker-info::after {
+        width: 200px;
+        height: 250px;
+        right: 5px;
+        opacity: 0.05;
+      }
+    }
+    
+    /* Medium screens */
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .organizer-list, .speaker-list {
+        grid-template-columns: 1fr;
+        gap: 25px;
+      }
+      
+      .organizer-item, .speaker-item {
+        padding: 25px;
+      }
+      
+      .organizer-avatar img, .speaker-avatar img {
+        width: 140px;
+        height: 175px;
+      }
+      
+      .organizer-bio, .speaker-bio {
+        font-size: 0.95em;
+      }
+      
+      .organizer-affiliation, .speaker-affiliation {
+        font-size: 1.1em;
+      }
+      
+      .organizer-info::after,
+      .speaker-info::after {
+        width: 240px;
+        height: 300px;
+        right: 8px;
+        opacity: 0.06;
+      }
+    }
+    
+    /* Large screens */
+    @media (min-width: 1025px) and (max-width: 1400px) {
+      .organizer-list, .speaker-list {
+        grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+        gap: 30px;
+      }
+      
+      .organizer-avatar img, .speaker-avatar img {
+        width: 150px;
+        height: 190px;
+      }
+    }
+    
+    /* Extra large screens */
+    @media (min-width: 1401px) {
+      .organizer-list, .speaker-list {
+        grid-template-columns: repeat(auto-fit, minmax(650px, 1fr));
+        gap: 35px;
+      }
+      
+      .organizer-avatar img, .speaker-avatar img {
+        width: 170px;
+        height: 215px;
+      }
+    }
+
+    /* Gallery Section */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 8px;
+      margin-top: 30px;
+    }
+
+    .gallery-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 6px;
+      cursor: pointer;
+      background: #e8eef7;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      height: 250px;
+    }
+
+    .gallery-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(45, 108, 191, 0.25);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.05);
+    }
+
+    /* Lightbox */
+    .gallery-lightbox {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .gallery-lightbox.active {
+      display: flex;
+    }
+
+    .gallery-lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 0 50px rgba(255, 255, 255, 0.1);
+    }
+
+    .gallery-lightbox-close {
+      position: absolute;
+      top: 30px;
+      right: 40px;
+      color: white;
+      font-size: 40px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      z-index: 10000;
+    }
+
+    .gallery-lightbox-close:hover {
+      transform: scale(1.2);
+    }
+
+    .gallery-lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      color: white;
+      font-size: 50px;
+      cursor: pointer;
+      padding: 20px;
+      user-select: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .gallery-lightbox-nav:hover {
+      opacity: 0.7;
+    }
+
+    .gallery-lightbox-prev {
+      left: 20px;
+    }
+
+    .gallery-lightbox-next {
+      right: 20px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 6px;
+      }
+      
+      .gallery-item {
+        height: 150px;
+      }
+      
+      .gallery-lightbox-close {
+        top: 15px;
+        right: 15px;
+        font-size: 30px;
+      }
+      
+      .gallery-lightbox-nav {
+        font-size: 35px;
+        padding: 10px;
+      }
+    }
+
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      }
+      
+      .gallery-item {
+        height: 220px;
+      }
+    }
+
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+  <div id="header" class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+      <a href="#" class="navbar-brand">
+          <div class="iccv-logo">CVPR</div>
+          World Model Tutorial
+      </a>
+      <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#intro">Introduction</a></li>
+          <li class="nav-item"><a class="nav-link" href="#schedule">Schedule</a></li>
+          <li class="nav-item"><a class="nav-link" href="#organizers">Organizers</a></li>
+          <li class="nav-item"><a class="nav-link" href="#speakers">Invited Speakers</a></li>
+          <li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
+          <li class="nav-item">
+            <a class="nav-link zoom-button" href="https://404" target="_blank">
+              <i class="fas fa-video"></i> Join Zoom
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div id="content">
+    <div id="hero">
+      <div class="container">
+        <h1>From Perception to Simulation: The Emergence of World Models in Multi-modal Reasoning</h1>
+        <h5>CVPR 2026 Tutorial</h5>
+        <p>
+          <i class="fa fa-calendar-days"></i> June 3rd, 2026, 2 PM (GMT-6, MT, Denver Time Zone)<br>
+          <i class="fa fa-location-dot"></i> Room 301/302, Colorado Convention Center, Denver, Colorado
+        </p>
+      </div>
+    </div>
+
+    <div id="intro" class="section">
+      <div class="container">
+        <h2>Introduction</h2>
+        <p style="font-size: 1.1em; line-height: 1.8; text-align: justify;">
+        World models are rapidly reshaping artificial intelligence, evolving from systems that passively perceive the world into engines capable of simulating, reasoning, and planning within it. This tutorial examines how recent advances in generative modeling, self-supervised learning, and multimodal architectures are enabling machines to move beyond recognition and prediction toward mental simulation, counterfactual reasoning, and decision making.
+
+        We will explore the foundations of world models, approaches for learning dynamics from visual and multimodal data, and the integration of planning and reasoning. The tutorial highlights connections between video generation, diffusion models, discrete representations, and embodied AI, while addressing key challenges such as grounding, causality, physical consistency, and evaluation.
+
+        Designed for researchers, practitioners, and students, this session provides both conceptual insights and practical perspectives on building AI systems that reason about environments rather than merely interpreting them.
+
+        Our tutorial attracted more than 300 attendees in person.
+        </p>
+      </div>
+    </div>
+
+    <div id="schedule" class="section">
+      <div class="container">
+        <h2>World Model Tutorial Schedule</h2>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col" style="width: 14%;">Time</th>
+                <th scope="col" style="width: 71%;">Session</th>
+                <th scope="col" style="width: 15%;">Speaker</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="time">14:00 - 14:10</td>
+                <td class="programme">
+                  <p class="title mb-0">Opening Remark: Motivation and Overview <span class="abstract-toggle" data-bs-toggle="collapse" data-bs-target="#abstract-1" aria-expanded="false" aria-controls="abstract-1">[Abstract]</span><a href="assets/slides/yujun.pdf" class="slides-link" target="_blank" download>[Slides]</a></p>
+                  <div class="collapse mt-2" id="abstract-1">
+                    <div class="abstract-content">
+                      <strong>Abstract:</strong> This tutorial explores the paradigm shift in computer vision from perception to simulation through multimodal world models. While traditional AI focuses on static scene recognition, world models bridge the gap between seeing and deciding by integrating vision, video, language, and action into a shared latent structure. This enables AI to transition from simple recognition to temporal reasoning, future prediction, counterfactuals, and action planning, turning perception into a robust foundation for internal physical simulation and causal reasoning.
+                    </div>
+                  </div>
+                </td>
+                <td class="speaker">
+                  <p class="speaker-text"><a href="https://vanoracai.github.io/" target="_blank">Yujun Cai</a></p>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="time">14:10 - 14:40</td>
+                <td class="programme">
+                  <p class="title mb-0">Invited Talk: From Chain-of-Thought to Chain-of-State: Why Capable Models Must Predict the World Back <span class="abstract-toggle" data-bs-toggle="collapse" data-bs-target="#abstract-4" aria-expanded="false" aria-controls="abstract-4">[Abstract]</span><a href="assets/slides/dan.pdf" class="slides-link" target="_blank" download>[Slides]</a></p>
+                  <div class="collapse mt-2" id="abstract-4">
+                    <div class="abstract-content">
+                      <strong>Abstract:</strong> Recent years have witnessed rapid progress in models that generate, predict, and act across increasingly rich environments, from video generators and embodied agents to interactive software agents. These systems are often grouped under the term “world models,” yet defining the term remains elusive, as the term has become overloaded: world models may be explored through the lens of video, 3D, latent dynamics, physics simulations, robotics, etc. This tutorial presents a unified view of world models as state-transition predictors across many kinds of worlds: visual, physical, textual, computational, and social. The tutorial will connect recent work on multimodal visual reasoning, reinforcement world model learning, environment-token prediction for CLI agents, RLVR-trained world models, world-action models, and adversarial reasoning models to argue that the next frontier for increasingly capable models is moving from chain-of-thought to chain-of-state: i.e., from generating plausible intermediate reasoning to maintaining, simulating, and updating the state of the world their actions affect.
+                    </div>
+                  </div>
+                </td>
+                <td class="speaker">
+                  <p class="speaker-text"><a href="https://dankondratyuk.com/about/" target="_blank">Dan Kondratyuk</a></p>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="time">14:40 - 15:10</td>
+                <td class="programme">
+                  <p class="title mb-0">Invited Talk: Genie 3: Generating interactive photorealistic worlds<span class="abstract-toggle" data-bs-toggle="collapse" data-bs-target="#abstract-2" aria-expanded="false" aria-controls="abstract-2">[Abstract]</span><a href="assets/slides/video_tt_challenge.pdf" class="slides-link" target="_blank" download>[Slides]</a></p>
+                  <div class="collapse mt-2" id="abstract-2">
+                    <div class="abstract-content">
+                      <strong>Abstract:</strong> Genie 3 is a frontier video generative model for creating photorealistic interactive worlds that users can navigate and interact with in real-time. In this talk, we discuss its capabilities including real-time generation, interactivity, photoreal quality, world consistency, and grounding. We will also discuss its limitations and high-level research problems and applications for video world models.
+                    </div>
+                  </div>
+                </td>
+                <td class="speaker">
+                  <p class="speaker-text"><a href="https://hangqi.io/" target="_blank">Hang Qi</a></p>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="time">15:10 - 15:50</td>
+                <td class="programme">
+                  <p class="title mb-0">Invited Talk: Towards Physics-Consistent Efficient Visual World Models <span class="abstract-toggle" data-bs-toggle="collapse" data-bs-target="#abstract-3" aria-expanded="false" aria-controls="abstract-3">[Abstract]</span><a href="assets/slides/jianfei.pdf" class="slides-link" target="_blank" download>[Slides]</a></p>
+                  <div class="collapse mt-2" id="abstract-3">
+                    <div class="abstract-content">
+                      <strong>Abstract:</strong> Recent advances in large language models (LLMs) and multimodal large language models (MLLMs) have significantly enhanced the understanding and encoding of textual information. Leveraging these capabilities, a growing number of diffusion-based generative models have emerged for text-conditioned visual generation — spanning text-to-image, text-to-video, and text-to-3D tasks. While these models offer remarkable flexibility and produce increasingly realistic content as world models, they still face fundamental challenges: aligning precisely with user intent, maintaining spatial, view, and temporal consistency, and adhering to the laws of physics. In this talk, I will present several recent research projects from my group that attacks these challenges. For example, VLIPP integrates physics-informed priors to ensure text-to-video generation consistent with physics. UCPE introduces unified camera encoding to facilitate accurate camera controls, which we believe is critical for video generation as world models. 
+                    </div>
+                  </div>
+                </td>
+                <td class="speaker">
+                  <p class="speaker-text"><a href="https://jianfei-cai.github.io/" target="_blank">Jianfei Cai</a></p>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="time">15:50 - 16:20</td>
+                <td class="programme">
+                  <p class="title mb-0">Invited Talk: VideoPhy: Physical Commonsense Evaluation in Video Generation <span class="abstract-toggle" data-bs-toggle="collapse" data-bs-target="#abstract-5" aria-expanded="false" aria-controls="abstract-5">[Abstract]</span><a href="assets/slides/kai-wei-chang-math-reasoning.pdf" class="slides-link" target="_blank" download>[Slides]</a></p>
+                  <div class="collapse mt-2" id="abstract-5">
+                    <div class="abstract-content">
+                      <strong>Abstract:</strong> Large-scale text-to-video generative models have demonstrated remarkable ability to synthesize realistic videos across diverse visual concepts, positioning them as candidates for general-purpose physical world simulators. However, it remains an open question how faithfully these models adhere to physical commonsense. We present the VideoPhy benchmark series to rigorously evaluate physical commonsense in text-to-video generation. VideoPhy introduces prompts grounded in real-world material interactions (solid-solid, solid-fluid, fluid-fluid), revealing that even the best-performing models at time of publication severely lack the ability to generate videos that adhere to both the given text prompt and physical laws. Building on this, VideoPhy-2 introduces an action-centric evaluation paradigm with 200 diverse real-world actions and fine-grained physical rule analysis, exposing deeper failure modes, particularly around conservation laws such as mass and momentum. Both benchmarks rely on human evaluation to ensure grounded, reliable assessment, and each introduces an automatic evaluator to enable scalable evaluation of newly released models. Together, our benchmarks show that current video generative models fall significantly short of physically plausible world simulation, and highlight key directions for future research.
+                    </div>
+                  </div>
+                </td>
+                <td class="speaker">
+                  <p class="speaker-text"><a href="https://web.cs.ucla.edu/~kwchang/" target="_blank">Kai-Wei Chang</a></p>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="time">16:20 - 16:50</td>
+                <td class="programme">
+                  <p class="title mb-0">Invited Talk: Cosmos 3: Omni World Foundation Models for Physical AI<span class="abstract-toggle" data-bs-toggle="collapse" data-bs-target="#abstract-6" aria-expanded="false" aria-controls="abstract-6">[Abstract]</span><a href="assets/slides/junsong.pdf" class="slides-link" target="_blank" download>[Slides]</a></p>
+                  <div class="collapse mt-2" id="abstract-6">
+                    <div class="abstract-content">
+                      <strong>Abstract:</strong> Foundation models are rapidly expanding beyond language and vision toward systems that can understand, simulate, and interact with the physical world. In this talk, I will introduce Cosmos 3, a new family of omni world foundation models for Physical AI that jointly process and generate language, images, video, audio, and action sequences within a unified Mixture-of-Transformers architecture. Cosmos 3 supports highly flexible multimodal input-output configurations, allowing a single model to operate as a vision-language model, video generator, world simulator, and world-action model. I will discuss the architectural design and multimodal training pipeline, as well as the challenges of building scalable world models that unify perception, reasoning, simulation, and action generation.
+                    </div>
+                  </div>
+                </td>
+                <td class="speaker">
+                  <p class="speaker-text"><a href="https://mingyuliu.net/" target="_blank">Ming-Yu Liu</a></p>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="time">16:50 - 17:25</td>
+                <td class="programme">
+                  <p class="title mb-0">Invited Talk: Toward World Models: Geometry, View Synthesis, and Visual Reasoning<span class="abstract-toggle" data-bs-toggle="collapse" data-bs-target="#abstract-7" aria-expanded="false" aria-controls="abstract-7">[Abstract]</span><a href="assets/slides/minghsuan.pdf" class="slides-link" target="_blank" download>[Slides]</a></p>
+                  <div class="collapse mt-2" id="abstract-7">
+                    <div class="abstract-content">
+                      <strong>Abstract:</strong> Recent advances in dynamic scene reconstruction, view synthesis, and multimodal reasoning are rapidly shaping the development of AI world models. Methods such as DUSt3R show that geometry and motion can now be recovered from casually captured images and videos, while neural rendering and view synthesis enable realistic generation of unseen viewpoints. At the same time, multimodal reasoning models are becoming increasingly capable of understanding object relationships, scene dynamics, and physical interactions.
+
+                      This talk will discuss how these directions are converging toward unified world models that can reconstruct, generate, and reason about dynamic environments. I will highlight recent progress in dynamic 3D/4D reconstruction, geometry-aware generation, and physically grounded visual reasoning, and discuss their implications for embodied AI, robotics, and interactive visual understanding.
+                    </div>
+                  </div>
+                </td>
+                <td class="speaker">
+                  <p class="speaker-text"><a href="https://faculty.ucmerced.edu/mhyang/" target="_blank">Ming-Hsuan Yang</a></p>
+                  <p class="speaker-text"><small>Due to a last-minute change, this talk was presented by Ming-Hsuan Yang's PhD students: Haobo Yuan, Hsin-Ying Lee, Weijie Lyu, and Freeman Cheng.</small></p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="organizers" class="section">
+      <div class="container">
+        <h2>Organizers</h2>
+        <div class="organizer-list">
+          <div class="organizer-item" data-institution="ant-uq">
+            <div class="organizer-avatar">
+              <img src="assets/images/avatars/yujuncai.png" alt="Yujun Cai">
+            </div>
+            <div class="organizer-info">
+              <h5 class="organizer-name">Yujun Cai</h5>
+              <p class="organizer-affiliation">Staff Research Scientist at Ant Group, Lecturer at University of Queensland</p>
+              <p class="organizer-bio">Yujun Cai is a Lecturer in the University of Queensland in Australia and a Staff Research Scientist in Ant Group USA. Before that, she was a Senior Research Scientist in Meta Reality Lab. 
+              Her research lies in multi-modal human perception, vision-language models, and natural language processing. She obtained her PhD. degree from Nanyang Technological University in Singapore. </p>
+              <ul class="organizer-links">
+                <li><a href="//vanoracai.github.io/" target="_blank"><i class="fa fa-house"></i></a></li>
+                <li><a href="https://scholar.google.com/citations?user=TE7lbQwAAAAJ" target="_blank"><i class="fas fa-graduation-cap"></i></a></li>
+                <li><a href="//vanoracai.github.io/" target="_blank"><i class="fab fa-github"></i></a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="organizer-item" data-institution="monash">
+            <div class="organizer-avatar">
+              <img src="assets/images/avatars/jianfeicai.jpg" alt="Jianfei Cai">
+            </div>
+            <div class="organizer-info">
+              <h5 class="organizer-name">Jianfei Cai</h5>
+              <p class="organizer-affiliation">Full Professor at Monash University</p>
+              <p class="organizer-bio">Jianfei Cai is a Professor at Faculty of IT, Monash University, where he had served as the inaugural Head for the Data Science & AI Department. Before that, he was Head of Visual and Interactive Computing Division and Head of Computer Communications Division in Nanyang Technological University (NTU). His major research interests include visual computing, computer vision, and multimedia. He is a co-recipient of paper awards in ACCV, ICCM, IEEE ICIP and MMSP, and a winner of Monash FIT’s Dean's Researcher of the Year Award and Dean's Award for Excellence in Graduate Research Supervision. He serves or has served as an Associate Editor for TPAMI, IJCV, IEEE T-IP, T-MM, and T-CSVT as well as serving as Senior/Area Chair for CVPR, ICCV, ECCV, ACM Multimedia, NeurIPS, ICLR and IJCAI. He was the leading General Chair for ACM Multimedia 2024. He is a distinguished member of ACM and a Fellow of IEEE.</p>
+              <ul class="organizer-links">
+                <li><a href="https://jianfei-cai.github.io/" target="_blank"><i class="fa fa-house"></i></a></li>
+                <li><a href="https://scholar.google.com/citations?user=N6czCoUAAAAJ" target="_blank"><i class="fas fa-graduation-cap"></i></a></li>
+                <li><a href="https://jianfei-cai.github.io/" target="_blank"><i class="fab fa-github"></i></a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="organizer-item" data-institution="ucmerced">
+            <div class="organizer-avatar">
+              <img src="assets/images/avatars/yiweiwang.jpg" alt="Yiwei Wang">
+            </div>
+            <div class="organizer-info">
+              <h5 class="organizer-name">Yiwei Wang</h5>
+              <p class="organizer-affiliation">Assistant Professor at University of California, Merced</p>
+              <p class="organizer-bio">Dr. Yiwei Wang was an Applied Scientist in Amazon (Seattle) in 2023 and a Postdoc in UCLA NLP Group in 2024. He obtained his Ph.D. degree from National University of Singapore in 2023. Currently, he leads the UC Merced NLP Lab, where his team explores cutting-edge approaches to diffusion llms, reasoning multi-modal llms, and their applications in medicine, advertising, risk detection, signal processing, etc. </p>
+              <ul class="organizer-links">
+                <li><a href="https://wangywust.github.io/" target="_blank"><i class="fa fa-house"></i></a></li>
+                <li><a href="https://scholar.google.com/citations?user=Sh9QvBkAAAAJ" target="_blank"><i class="fas fa-graduation-cap"></i></a></li>
+                <li><a href="https://wangywust.github.io/" target="_blank"><i class="fab fa-github"></i></a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="organizer-item" data-institution="ucmerced">
+            <div class="organizer-avatar">
+              <img src="assets/images/avatars/minghsuanyang.jpg" alt="Ming-Hsuan Yang">
+            </div>
+            <div class="organizer-info">
+              <h5 class="organizer-name">Ming-Hsuan Yang</h5>
+              <p class="organizer-affiliation">Full Professor at University of California, Merced</p>
+              <p class="organizer-bio">Ming-Hsuan Yang is a Professor at University of California, Merced, and a Research Scientist at Google DeepMind. His research has received numerous honors, including Google Faculty Award (2009), NSF CAREER Award (2012), NVIDIA Pioneer Research Awards (2017, 2018), and Sony Faculty Award (2025). He has received Best Paper Honorable Mentions at UIST 2017 and CVPR 2018, Best Student Paper Honorable Mention at ACCV 2018, Longuet-Higgins Prize (Test-of-Time Award) at CVPR 2023, Best Paper Award at ICML 2024, and Test-of-Time Award from WACV 2025. He has been recognized as a Highly Cited Researcher from 2018 to 2025. He currently serves as Associate Editor-in-Chief of IEEE Transactions on Pattern Analysis and Machine Intelligence (PAMI) and as an Associate Editor of International Journal of Computer Vision (IJCV) and Transactions on Machine Learning Research (TMLR). He is a Fellow of IEEE, ACM, AAAI, and AAAS.</p>
+              <ul class="organizer-links">
+                <li><a href="https://faculty.ucmerced.edu/mhyang/" target="_blank"><i class="fa fa-house"></i></a></li>
+                <li><a href="https://scholar.google.com/citations?hl=en&user=p9-ohHsAAAAJ" target="_blank"><i class="fas fa-graduation-cap"></i></a></li>
+                <li><a href="https://faculty.ucmerced.edu/mhyang/" target="_blank"><i class="fab fa-github"></i></a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="speakers" class="section">
+      <div class="container">
+        <h2>Invited Speakers</h2>
+        <div class="speaker-list">
+
+          <div class="speaker-item" data-institution="ucla">
+            <div class="speaker-avatar">
+              <img src="assets/images/avatars/kaiweichang.jpg" alt="Kai-Wei Chang">
+            </div>
+            <div class="speaker-info">
+              <h5 class="speaker-name">Kai-Wei Chang</h5>
+              <p class="speaker-affiliation">Full Professor at UCLA</p>
+              <p class="speaker-bio">Kai-Wei Chang is a Professor in the Department of Computer
+                Science at the University of California Los Angeles. His research interests include designing
+                trustworthy natural language processing systems and developing
+                multimodal models for vision-language applications. Kai-Wei has
+                published broadly in NLP, AI, and ML. His awards include the Sloan
+                Fellow (2021), AAAI Senior Member (2023), EMNLP Best Long Paper Award
+                (2017), and KDD Best Paper Award (2010). He is elected as an officer of
+                SIGDAT, the organizer running EMNLP.  Additional
+                information is available at http://kwchang.net/</p>
+              <ul class="speaker-links">
+                <li><a href="https://web.cs.ucla.edu/~kwchang/" target="_blank"><i class="fa fa-house"></i></a></li>
+                <li><a href="https://scholar.google.com/citations?hl=en&user=fqDBtzYAAAAJ" target="_blank"><i class="fas fa-graduation-cap"></i></a></li>
+                <li><a href="https://github.com/kwchang" target="_blank"><i class="fab fa-github"></i></a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="speaker-item" data-institution="nvidia">
+            <div class="speaker-avatar">
+              <img src="assets/images/avatars/mingyu.jpg" alt="Ming-Yu Liu">
+            </div>
+            <div class="speaker-info">
+              <h5 class="speaker-name">Ming-Yu Liu</h5>
+              <p class="speaker-affiliation">Vice President of Research at NVIDIA</p>
+              <p class="speaker-bio">Dr. Ming-Yu Liu is a Vice President of Research at NVIDIA and an IEEE Fellow. He leads NVIDIA Cosmos Lab, where he advances Generative AI for Physical AI — building world foundation models that allow machines not just to perceive the world, but to simulate, reason about, and interact with it. </p>
+              <ul class="speaker-links">
+                <li><a href="https://mingyuliu.net/" target="_blank"><i class="fa fa-house"></i></a></li>
+                <li><a href="https://scholar.google.com/citations?user=y-f-MZgAAAAJ&hl=en" target="_blank"><i class="fas fa-graduation-cap"></i></a></li>
+                <li><a href="https://mingyuliu.net/" target="_blank"><i class="fab fa-github"></i></a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="speaker-item" data-institution="google-deepmind">
+            <div class="speaker-avatar">
+              <img src="assets/images/avatars/hangqi.jpg" alt="Hang Qi">
+            </div>
+            <div class="speaker-info">
+              <h5 class="speaker-name">Hang Qi</h5>
+              <p class="speaker-affiliation">Staff Research Engineer at Google</p>
+              <p class="speaker-bio">Dr. Hang Qi is a Staff Research Engineer at Google DeepMind specializing in computer vision and machine learning. With nearly eight years at Google, he has led and contributed to research and engineering across Google Research and DeepMind, focusing on large-scale vision, multimodal systems, and generative media models. He holds both a Ph.D. and M.S. in Computer Science from UCLA. </p>
+              <ul class="speaker-links">
+                <li><a href="https://hangqi.io/" target="_blank"><i class="fa fa-house"></i></a></li>
+                <li><a href="https://scholar.google.com/citations?user=72jdrSUAAAAJ&hl=en" target="_blank"><i class="fas fa-graduation-cap"></i></a></li>
+                <li><a href="https://github.com/hang-qi" target="_blank"><i class="fab fa-github"></i></a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="speaker-item" data-institution="rekursive">
+            <div class="speaker-avatar">
+              <img src="assets/images/avatars/dankon.png" alt="Dan Kondratyuk">
+            </div>
+            <div class="speaker-info">
+              <h5 class="speaker-name">Dan Kondratyuk</h5>
+              <p class="speaker-affiliation">Co-Founder at rekursiv.ai</p>
+              <p class="speaker-bio">Dan Kondratyuk is a Research Scientist specializing in large-scale multimodal generative systems, spanning video, image, audio, and language models. He is the first author of VideoPoet, an LLM for zero-shot video generation that received the ICML 2024 Best Paper Award. Previously at Google, he developed MoViNet for real-time mobile video classification and contributed to large-scale LLM and multimodal training infrastructure. </p>
+              <ul class="speaker-links">
+                <li><a href="https://dankondratyuk.com/about/" target="_blank"><i class="fa fa-house"></i></a></li>
+                <li><a href="https://scholar.google.com/citations?user=hl1fJgIAAAAJ&hl=en" target="_blank"><i class="fas fa-graduation-cap"></i></a></li>
+                <li><a href="https://github.com/hyperparticle" target="_blank"><i class="fab fa-github"></i></a></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="speaker-item" data-institution="ucmerced">
+            <div class="speaker-avatar">
+              <img src="assets/images/avatars/Haobo_Yuan.jpg" alt="Haobo Yuan">
+            </div>
+            <div class="speaker-info">
+              <h5 class="speaker-name">Haobo Yuan</h5>
+              <p class="speaker-affiliation">PhD Student at University of California, Merced</p>
+              <p class="speaker-bio">Haobo Yuan is a PhD student at UC Merced, working under the supervision of Prof. Ming-Hsuan Yang. His research focuses on advancing multi-modal large language models, visual reasoning, and image/video generation.</p>
+            </div>
+          </div>
+
+          <div class="speaker-item" data-institution="ucmerced">
+            <div class="speaker-avatar">
+              <img src="assets/images/avatars/Hsin-Ying_Lee.jpg" alt="Hsin-Ying Lee">
+            </div>
+            <div class="speaker-info">
+              <h5 class="speaker-name">Hsin-Ying Lee</h5>
+              <p class="speaker-affiliation">PhD Student at University of California, Merced</p>
+              <p class="speaker-bio">Hsin-Ying Lee is a PhD student at UC Merced, advised by Prof. Ming-Hsuan Yang. His research focuses on image and video generation.</p>
+            </div>
+          </div>
+
+          <div class="speaker-item" data-institution="ucmerced">
+            <div class="speaker-avatar">
+              <img src="assets/images/avatars/Weijie_Lyu.png" alt="Weijie Lyu">
+            </div>
+            <div class="speaker-info">
+              <h5 class="speaker-name">Weijie Lyu</h5>
+              <p class="speaker-affiliation">EECS PhD Candidate at University of California, Merced</p>
+              <p class="speaker-bio">Weijie Lyu is a third-year EECS PhD candidate at University of California, Merced, advised by Prof. Ming-Hsuan Yang. His research interests are 3D and 4D reconstruction and video generation.</p>
+            </div>
+          </div>
+
+          <div class="speaker-item" data-institution="ucmerced">
+            <div class="speaker-avatar">
+              <img src="assets/images/avatars/Freeman_Cheng.jpeg" alt="Freeman Cheng">
+            </div>
+            <div class="speaker-info">
+              <h5 class="speaker-name">Freeman Cheng</h5>
+              <p class="speaker-affiliation">EECS PhD Student at University of California, Merced</p>
+              <p class="speaker-bio">Freeman Cheng is a first-year EECS PhD student at UC Merced advised by Prof. Ming-Hsuan Yang. He is interested in feedforward 3D reconstruction.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="gallery" class="section">
+    <div class="container">
+      <h2>Gallery</h2>
+      <div class="gallery-grid" id="galleryGrid">
+        <!-- Photos will be loaded dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <div id="footer">
+    <div class="container">
+      <p>&copy;2026 <em>From Perception to Simulation: The Emergence of World Models in Multi-modal Reasoning</em> CVPR Tutorial</p>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    $(document).on('scroll', function() {
+      let currentOffset = $(window).scrollTop() + 80,
+          currentSection = "",
+          sections = ["intro", "schedule", "organizers", "speakers", "gallery"];
+
+      for (let i = 0; i < sections.length; ++i) {
+        if ($('#' + sections[i]).length && currentOffset < $('#' + sections[i]).offset().top) {
+          break;
+        }
+        currentSection = sections[i];
+      }
+
+      let $navbar = $('.navbar'),
+          $navLinks = $navbar.find('a');
+
+      $navLinks.parent().removeClass('active');
+      $navLinks.each(function() {
+        if ($(this).attr('href') === '#' + currentSection) {
+          $(this).parent().addClass('active');
+        }
+      });
+    });
+
+    // Gallery Photo Wall
+    (function() {
+      const galleryFolder = 'assets/gallery/';
+      const photoFiles = [
+        'photo1.jpg',
+        'photo2.jpg',
+        'photo3.jpg',
+        'photo4.jpg',
+        'photo5.jpg',
+        'photo6.jpg',
+        'photo7.jpg',
+        'photo8.jpg',
+        'photo9.jpg',
+        'photo10.jpg',
+        'photo11.jpg',
+        'photo12.jpg',
+        'photo13.jpg',
+        'photo14.jpg',
+        'photo15.jpg',
+        'photo16.jpg',
+        'photo17.jpg',
+        'photo18.jpg',
+        'photo19.jpg',
+        'photo20.jpg',
+        'photo21.jpg',
+        'photo22.jpg',
+        'photo23.jpg',
+        'photo24.jpg',
+        'photo25.jpg',
+        'photo26.jpg',
+        'photo27.jpg',
+      ];
+
+      const galleryGrid = document.getElementById('galleryGrid');
+      let currentImageIndex = 0;
+
+      // Create lightbox
+      const lightbox = document.createElement('div');
+      lightbox.className = 'gallery-lightbox';
+      lightbox.innerHTML = `
+        <span class="gallery-lightbox-close">&times;</span>
+        <span class="gallery-lightbox-nav gallery-lightbox-prev">&#10094;</span>
+        <img src="" alt="Gallery Image">
+        <span class="gallery-lightbox-nav gallery-lightbox-next">&#10095;</span>
+      `;
+      document.body.appendChild(lightbox);
+
+      const lightboxImg = lightbox.querySelector('img');
+      const closeBtn = lightbox.querySelector('.gallery-lightbox-close');
+      const prevBtn = lightbox.querySelector('.gallery-lightbox-prev');
+      const nextBtn = lightbox.querySelector('.gallery-lightbox-next');
+
+      // Load photos
+      photoFiles.forEach((photo, index) => {
+        const item = document.createElement('div');
+        item.className = 'gallery-item';
+        item.innerHTML = `<img src="${galleryFolder}${photo}" alt="Gallery Photo ${index + 1}">`;
+        item.addEventListener('click', () => openLightbox(index));
+        galleryGrid.appendChild(item);
+      });
+
+      function openLightbox(index) {
+        currentImageIndex = index;
+        lightboxImg.src = galleryFolder + photoFiles[index];
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      function showNext() {
+        currentImageIndex = (currentImageIndex + 1) % photoFiles.length;
+        lightboxImg.src = galleryFolder + photoFiles[currentImageIndex];
+      }
+
+      function showPrev() {
+        currentImageIndex = (currentImageIndex - 1 + photoFiles.length) % photoFiles.length;
+        lightboxImg.src = galleryFolder + photoFiles[currentImageIndex];
+      }
+
+      closeBtn.addEventListener('click', closeLightbox);
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+      nextBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showNext();
+      });
+      prevBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showPrev();
+      });
+
+      // Keyboard navigation
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowRight') showNext();
+        if (e.key === 'ArrowLeft') showPrev();
+      });
+    })();
+
+  </script>
+</body>
+</html>
