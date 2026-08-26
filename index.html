@@ -146,6 +146,26 @@
       margin: 0;
       font-size: 1.1em;
     }
+
+    .speaker-text {
+      color: #000000;
+      font-weight: 500;
+      font-size: 1em;
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    .speaker-text a {
+      color: #000000;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      font-weight: 600;
+    }
+
+    .speaker-text a:hover {
+      color: #3e7b54;
+      text-decoration: underline;
+    }
     
     .organizer-list {
       display: grid;
@@ -320,6 +340,10 @@
     }
     
     .table td.programme {
+      text-align: left;
+    }
+
+    .table td.speaker {
       text-align: left;
     }
     
@@ -602,16 +626,6 @@
       font-weight: 500;
     }
 
-    .speaker-talk-title {
-      color: #1f3f2b;
-      font-size: 1.05em;
-      line-height: 1.45;
-      margin-bottom: 15px;
-      font-weight: 600;
-      text-align: left;
-    }
-
-    .speaker-abstract,
     .speaker-bio {
       color: #495057;
       font-size: 1em;
@@ -621,7 +635,6 @@
       text-justify: inter-word;
     }
 
-    .speaker-abstract strong,
     .speaker-bio strong {
       color: #1f3f2b;
     }
@@ -672,8 +685,6 @@
 
       .speaker-name,
       .speaker-affiliation,
-      .speaker-talk-title,
-      .speaker-abstract,
       .speaker-bio {
         text-align: center;
       }
@@ -882,15 +893,24 @@
           <table class="table table-striped">
             <thead>
               <tr>
-                <th scope="col" style="width: 24%;">Time</th>
-                <th scope="col" style="width: 76%;">Session</th>
+                <th scope="col" style="width: 14%;">Time</th>
+                <th scope="col" style="width: 71%;">Session</th>
+                <th scope="col" style="width: 15%;">Speaker</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td class="time">TBD</td>
                 <td class="programme">
-                  <p class="title mb-0">Detailed ECCV 2026 tutorial schedule will be announced.</p>
+                  <p class="title mb-0">Invited Talk: From Imagined Futures to Structured Representations: World Models for Robots <span class="abstract-toggle" data-bs-toggle="collapse" data-bs-target="#abstract-xiatian-zhu" aria-expanded="false" aria-controls="abstract-xiatian-zhu">[Abstract]</span></p>
+                  <div class="collapse mt-2" id="abstract-xiatian-zhu">
+                    <div class="abstract-content">
+                      <strong>Abstract:</strong> World models - internal representations that let a robot predict, plan, and act - are central to progress across robotics, yet turning general-purpose video-generation and vision-language foundation models into something a controller can use remains an open problem. This tutorial presents cases of world models for robots across different robot embodiments, showing how imagined futures and generalist visual-language understanding can be converted into structured, action-ready representations. Through case studies and open discussion, I hope attendees will leave with practical thoughts on building world models across robot embodiments.
+                    </div>
+                  </div>
+                </td>
+                <td class="speaker">
+                  <p class="speaker-text"><a href="https://x-up-lab.github.io/" target="_blank">Xiatian Zhu</a></p>
                 </td>
               </tr>
             </tbody>
@@ -997,9 +1017,7 @@
             <div class="speaker-info">
               <h5 class="speaker-name">Xiatian Zhu</h5>
               <p class="speaker-affiliation">Reader (Associate Professor) at University of Surrey</p>
-              <p class="speaker-talk-title"><strong>Talk Title:</strong> From Imagined Futures to Structured Representations: World Models for Robots</p>
-              <p class="speaker-abstract"><strong>Abstract:</strong> World models - internal representations that let a robot predict, plan, and act - are central to progress across robotics, yet turning general-purpose video-generation and vision-language foundation models into something a controller can use remains an open problem. This tutorial presents cases of world models for robots across different robot embodiments, showing how imagined futures and generalist visual-language understanding can be converted into structured, action-ready representations. Through case studies and open discussion, I hope attendees will leave with practical thoughts on building world models across robot embodiments.</p>
-              <p class="speaker-bio"><strong>Short Bio:</strong> Dr. Xiatian Zhu is a Reader (Associate Professor) at the Surrey Institute for People-Centred Artificial Intelligence and the Centre for Vision, Speech, and Signal Processing (CVSSP) at the University of Surrey in Guildford, UK. He leads the Universal Perception (UP) Lab, dedicated to advancing physical spacetime AI - building world models that perceive, generate, and reason about the physical world across space, time, and physical law - with applications spanning creative media, fashion, healthcare, climate science, and cybersecurity. Dr. Zhu earned his PhD from Queen Mary University of London and received the 2016 Sullivan Doctoral Thesis Prize from the British Machine Vision Association. His contributions include the development and commercialization of multi-camera object association systems for industry. During his time as a research scientist at the Samsung AI Centre in Cambridge, Dr. Zhu pioneered sustainable AI algorithms for understanding visual content in images and videos. His work has garnered several best paper awards, and he has been recognized as one of the UK's and the world's best rising stars in science. Dr. Zhu's extensive research output includes over 200 articles in top-tier conferences and journals, with more than 27,000 citations and an H-index of 67. Additionally, Dr. Zhu holds five US patents in the fields of computer vision and AI. He is an IEEE Senior Member. He serves as an Associate Editor of the IEEE Transactions on Multimedia (TMM) and an Action Editor for Transactions on Machine Learning Research (TMLR). He also serves/served as an Area Chair for top conferences including CVPR, ICCV, NeurIPS, and ICLR.</p>
+              <p class="speaker-bio">Dr. Xiatian Zhu is a Reader (Associate Professor) at the Surrey Institute for People-Centred Artificial Intelligence and the Centre for Vision, Speech, and Signal Processing (CVSSP) at the University of Surrey in Guildford, UK. He leads the Universal Perception (UP) Lab, dedicated to advancing physical spacetime AI - building world models that perceive, generate, and reason about the physical world across space, time, and physical law - with applications spanning creative media, fashion, healthcare, climate science, and cybersecurity. Dr. Zhu earned his PhD from Queen Mary University of London and received the 2016 Sullivan Doctoral Thesis Prize from the British Machine Vision Association. His contributions include the development and commercialization of multi-camera object association systems for industry. During his time as a research scientist at the Samsung AI Centre in Cambridge, Dr. Zhu pioneered sustainable AI algorithms for understanding visual content in images and videos. His work has garnered several best paper awards, and he has been recognized as one of the UK's and the world's best rising stars in science. Dr. Zhu's extensive research output includes over 200 articles in top-tier conferences and journals, with more than 27,000 citations and an H-index of 67. Additionally, Dr. Zhu holds five US patents in the fields of computer vision and AI. He is an IEEE Senior Member. He serves as an Associate Editor of the IEEE Transactions on Multimedia (TMM) and an Action Editor for Transactions on Machine Learning Research (TMLR). He also serves/served as an Area Chair for top conferences including CVPR, ICCV, NeurIPS, and ICLR.</p>
               <ul class="speaker-links">
                 <li><a href="https://x-up-lab.github.io/" target="_blank"><i class="fa fa-house"></i></a></li>
               </ul>
