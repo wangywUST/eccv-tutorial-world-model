@@ -541,6 +541,148 @@
       margin: 0 auto;
     }
 
+    .speaker-item {
+      display: flex;
+      align-items: center;
+      padding: 30px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 8px 25px rgba(39, 174, 96, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .speaker-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 35px rgba(39, 174, 96, 0.15);
+    }
+
+    .speaker-avatar {
+      flex-shrink: 0;
+      margin-right: 25px;
+    }
+
+    .speaker-avatar img {
+      width: 160px;
+      height: 200px;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
+      backface-visibility: hidden;
+      transform: translateZ(0);
+    }
+
+    .speaker-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: left;
+      position: relative;
+      overflow: visible;
+    }
+
+    .speaker-name {
+      color: #1f3f2b;
+      font-weight: 600;
+      font-size: 1.3em;
+      margin-bottom: 8px;
+      text-align: left;
+    }
+
+    .speaker-affiliation {
+      color: #3e7b54;
+      font-size: 1.15em;
+      margin-bottom: 15px;
+      line-height: 1.4;
+      text-align: left;
+      font-weight: 500;
+    }
+
+    .speaker-talk-title {
+      color: #1f3f2b;
+      font-size: 1.05em;
+      line-height: 1.45;
+      margin-bottom: 15px;
+      font-weight: 600;
+      text-align: left;
+    }
+
+    .speaker-abstract,
+    .speaker-bio {
+      color: #495057;
+      font-size: 1em;
+      line-height: 1.6;
+      margin-bottom: 18px;
+      text-align: justify;
+      text-justify: inter-word;
+    }
+
+    .speaker-abstract strong,
+    .speaker-bio strong {
+      color: #1f3f2b;
+    }
+
+    .speaker-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      gap: 15px;
+      justify-content: flex-start;
+    }
+
+    .speaker-links li a {
+      color: #3e7b54;
+      font-size: 1.3em;
+      transition: color 0.3s ease, transform 0.3s ease;
+      display: inline-block;
+    }
+
+    .speaker-links li a:hover {
+      color: #4a7c59;
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+      .speaker-list {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 0 15px;
+      }
+
+      .speaker-item {
+        flex-direction: column;
+        text-align: center;
+        padding: 25px 20px;
+      }
+
+      .speaker-avatar {
+        margin-right: 0;
+        margin-bottom: 20px;
+      }
+
+      .speaker-avatar img {
+        width: 130px;
+        height: 165px;
+      }
+
+      .speaker-name,
+      .speaker-affiliation,
+      .speaker-talk-title,
+      .speaker-abstract,
+      .speaker-bio {
+        text-align: center;
+      }
+
+      .speaker-links {
+        justify-content: center;
+      }
+    }
+
     /* Gallery Section */
     .gallery-grid {
       display: grid;
@@ -848,6 +990,21 @@
       <div class="container">
         <h2>Invited Speakers</h2>
         <div class="speaker-list">
+          <div class="speaker-item" data-institution="surrey">
+            <div class="speaker-avatar">
+              <img src="assets/images/avatars/xiatianzhu.jpeg" alt="Xiatian Zhu">
+            </div>
+            <div class="speaker-info">
+              <h5 class="speaker-name">Xiatian Zhu</h5>
+              <p class="speaker-affiliation">Reader (Associate Professor) at University of Surrey</p>
+              <p class="speaker-talk-title"><strong>Talk Title:</strong> From Imagined Futures to Structured Representations: World Models for Robots</p>
+              <p class="speaker-abstract"><strong>Abstract:</strong> World models - internal representations that let a robot predict, plan, and act - are central to progress across robotics, yet turning general-purpose video-generation and vision-language foundation models into something a controller can use remains an open problem. This tutorial presents cases of world models for robots across different robot embodiments, showing how imagined futures and generalist visual-language understanding can be converted into structured, action-ready representations. Through case studies and open discussion, I hope attendees will leave with practical thoughts on building world models across robot embodiments.</p>
+              <p class="speaker-bio"><strong>Short Bio:</strong> Dr. Xiatian Zhu is a Reader (Associate Professor) at the Surrey Institute for People-Centred Artificial Intelligence and the Centre for Vision, Speech, and Signal Processing (CVSSP) at the University of Surrey in Guildford, UK. He leads the Universal Perception (UP) Lab, dedicated to advancing physical spacetime AI - building world models that perceive, generate, and reason about the physical world across space, time, and physical law - with applications spanning creative media, fashion, healthcare, climate science, and cybersecurity. Dr. Zhu earned his PhD from Queen Mary University of London and received the 2016 Sullivan Doctoral Thesis Prize from the British Machine Vision Association. His contributions include the development and commercialization of multi-camera object association systems for industry. During his time as a research scientist at the Samsung AI Centre in Cambridge, Dr. Zhu pioneered sustainable AI algorithms for understanding visual content in images and videos. His work has garnered several best paper awards, and he has been recognized as one of the UK's and the world's best rising stars in science. Dr. Zhu's extensive research output includes over 200 articles in top-tier conferences and journals, with more than 27,000 citations and an H-index of 67. Additionally, Dr. Zhu holds five US patents in the fields of computer vision and AI. He is an IEEE Senior Member. He serves as an Associate Editor of the IEEE Transactions on Multimedia (TMM) and an Action Editor for Transactions on Machine Learning Research (TMLR). He also serves/served as an Area Chair for top conferences including CVPR, ICCV, NeurIPS, and ICLR.</p>
+              <ul class="speaker-links">
+                <li><a href="https://x-up-lab.github.io/" target="_blank"><i class="fa fa-house"></i></a></li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>
