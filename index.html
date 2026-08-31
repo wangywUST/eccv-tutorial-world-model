@@ -638,6 +638,10 @@
       background-image: url('assets/images/uaeu.png');
     }
 
+    .speaker-item[data-institution="ant"] .speaker-info::after {
+      background-image: url('assets/images/ant.svg');
+    }
+
     .speaker-name {
       color: #1f3f2b;
       font-weight: 600;
@@ -972,6 +976,21 @@
                   <p class="speaker-text"><a href="https://cse.buffalo.edu/~jsyuan/" target="_blank">Junsong Yuan</a></p>
                 </td>
               </tr>
+
+              <tr>
+                <td class="time">TBD</td>
+                <td class="programme">
+                  <p class="title mb-0">Invited Talk: From Perception to Action: Unifying Modalities and Tasks for Building Digital Worlds (Generative UI, Editable Visual Structures, and Design-grounded Coding) <span class="abstract-toggle" data-bs-toggle="collapse" data-bs-target="#abstract-dandan-zheng" aria-expanded="false" aria-controls="abstract-dandan-zheng">[Abstract]</span></p>
+                  <div class="collapse mt-2" id="abstract-dandan-zheng">
+                    <div class="abstract-content">
+                      <strong>Abstract:</strong> Multimodal foundation models are evolving from isolated perception systems into unified architectures that understand and generate content across images, video, audio, and language. However, unifying modalities and tasks does not automatically make model outputs actionable. A model may understand a design request and generate a visually compelling interface, while still returning only flat pixels: objects cannot be selected, assets cannot be independently edited, and the result cannot be directly executed or verified by an agent. In this talk, we present a three-stage progression from perception to action. First, modality unification establishes a shared perceptual substrate while preserving modality-specific expertise through cross-modal routing and collaborative training. Second, task unification connects understanding with generation, enabling capabilities such as generative segmentation, fine-grained editing, and multimodal content creation. Third, we introduce an actionable interface stack that extends unified models into real digital workflows: Generative UI supports visual exploration, editable visual structures expose semantic RGBA layers and compositional relationships, and Design-grounded Coding translates visual intent, assets, and design constraints into executable interfaces. Using the Ming series as connected system examples, we discuss how intent can be preserved from multimodal perception to visual proposals, structured editing, and code execution. We conclude with evaluation challenges, failure propagation across the pipeline, and open questions for multimodal systems that move beyond understanding and generation toward creating, editing, and acting within digital worlds.
+                    </div>
+                  </div>
+                </td>
+                <td class="speaker">
+                  <p class="speaker-text">Dandan Zheng</p>
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -1094,6 +1113,17 @@
               <ul class="speaker-links">
                 <li><a href="https://wuyirui.github.io" target="_blank"><i class="fa fa-house"></i></a></li>
               </ul>
+            </div>
+          </div>
+
+          <div class="speaker-item" data-institution="ant">
+            <div class="speaker-avatar">
+              <img src="assets/images/avatars/dandanzheng.jpg" alt="Dandan Zheng">
+            </div>
+            <div class="speaker-info">
+              <h5 class="speaker-name">Dandan Zheng</h5>
+              <p class="speaker-affiliation">Ant Group</p>
+              <p class="speaker-bio">Dandan Zheng received the M.S. degree in Computer Applications from Beijing University of Posts and Telecommunications, Beijing, China, in 2007, and is currently pursuing the Ph.D. degree in Cybersecurity at Huazhong University of Science and Technology, Wuhan, China. From 2007 to 2014, she was a Research Engineer at IBM China Software Development Lab, focusing on text mining and natural language processing. Since 2014, she has been with Ant Group, where she conducted research on face recognition and visual security from 2014 to 2022, and has been working on visual generation and unified multimodal modeling since 2022. Her research interests include multimodal understanding and generation, diffusion models, autoregressive visual generation, and vision-language unification.</p>
             </div>
           </div>
         </div>
